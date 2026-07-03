@@ -82,10 +82,10 @@ const questData = {
         name: "Lv.2 魔法口袋 ｜ 變數與基本資料型態",
         enemyName: "哥布林工兵",
         enemySprite: "🧌",
-        enemyMaxHp: 50,
+        enemyMaxHp: 60,
         steps: [
             {
-                title: "步驟 1/3: 建立第一個變數",
+                title: "步驟 1/6: 建立第一個變數",
                 text: "變數就像是你的魔法口袋。請建立一個名為 <code>mana</code> (魔力值) 的變數，並賦予數值 <code>50</code>：<br><strong style='color: #ff007f;'>mana = 50</strong>",
                 tip: "在 Python 中，使用等號 = 來為變數賦值，左邊是變數名，右邊是數值。",
                 placeholder: "# 建立 mana 變數並賦值 50",
@@ -94,7 +94,7 @@ const questData = {
                 }
             },
             {
-                title: "步驟 2/3: 儲存魔法字串",
+                title: "步驟 2/6: 儲存魔法字串",
                 text: "你也可以把咒語文字放進變數中。請建立一個名為 <code>spell</code> (咒語名稱) 的變數，並賦予字串 <code>'fireball'</code>：<br><strong style='color: #00ffff;'>spell = 'fireball'</strong>",
                 tip: "字串必須用單引號或雙引號包起來哦！",
                 placeholder: "# 建立 spell 變數並賦值 'fireball'",
@@ -103,12 +103,39 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：檢查魔力",
+                title: "步驟 3/6: 印出變數內容",
                 text: "哥布林工兵正要引爆炸藥！請輸出你剛剛在 <code>mana</code> 變數中存放的魔力值以啟動防護罩。請輸入：<br><strong style='color: #39ff14;'>mana = 50<br>print(mana)</strong>",
                 tip: "輸出變數內容時，print() 括號內『不需要』加上引號，直接填寫變數名稱即可！",
                 placeholder: "# 建立 mana 變數並用 print 輸出它",
                 validate: (code, output) => {
                     return code.includes("mana") && code.includes("print") && output.trim() === "50";
+                }
+            },
+            {
+                title: "步驟 4/6: 定義初始生命值",
+                text: "現在建立一個變數 <code>hp</code>，並賦予其整數值 <code>100</code> 代表你的初始生命力：<br><strong style='color: #ff007f;'>hp = 100</strong>",
+                tip: "建立變數時要注意變數名稱必須為小寫英文，等號兩邊加空格會更好讀喔！",
+                placeholder: "# 建立 hp 變數並賦值 100",
+                validate: (code, output) => {
+                    return code.replace(/\s/g, "").includes("hp=100");
+                }
+            },
+            {
+                title: "步驟 5/6: 削減生命值 (變數覆值)",
+                text: "受到哥布林火花濺射！請將 <code>hp</code> 減去 <code>20</code>，並重新存回 <code>hp</code> 變數中：<br><strong style='color: #00ffff;'>hp = 100<br>hp = hp - 20</strong>",
+                tip: "重新覆寫變數可以使用 x = x - 減少值的語法，Python 會先計算右邊再存回左邊。",
+                placeholder: "# 讓 hp 減去 20 並覆值回 hp",
+                validate: (code, output) => {
+                    return code.includes("hp") && code.includes("-") && code.replace(/\s/g, "").includes("hp=hp-20");
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：印出剩餘生命",
+                text: "最後，請將計算減血後的 <code>hp</code> 變數印出，以監控你的生命狀態：<br><strong style='color: #39ff14;'>hp = 100<br>hp = hp - 20<br>print(hp)</strong>",
+                tip: "印出變數直接放進 print() 的括號內，此時應該輸出 80。",
+                placeholder: "# 修改 hp 後，用 print 印出 hp 變數",
+                validate: (code, output) => {
+                    return code.includes("hp") && code.includes("print") && output.trim() === "80";
                 }
             }
         ]
@@ -120,8 +147,8 @@ const questData = {
         enemyMaxHp: 60,
         steps: [
             {
-                title: "步驟 1/3: 物理傷害計算",
-                text: "寄居蟹的防禦力很高。請用 Python 幫你計算 100 的基礎傷害減去 40 的護甲阻擋後得到的最終傷害，並將結果印出：<br><strong style='color: #ff007f;'>print(100 - 40)</strong>",
+                title: "步驟 1/6: 物理傷害計算",
+                text: "寄居蟹的防禦力很高。請用 Python 幫你計算 100 的傷害減去 40 的護甲阻擋後得到的最終傷害，並將結果印出：<br><strong style='color: #ff007f;'>print(100 - 40)</strong>",
                 tip: "Python 可以直接當成計算機，支援 +, -, *, / 等算術符號。",
                 placeholder: "# 計算 100 減 40 的結果並輸出",
                 validate: (code, output) => {
@@ -129,7 +156,7 @@ const questData = {
                 }
             },
             {
-                title: "步驟 2/3: 利用變數做加乘",
+                title: "步驟 2/6: 利用變數做加乘",
                 text: "建立一個變數 <code>atk</code> 賦值 <code>20</code>，再建立一個變數 <code>crit</code> (爆擊倍率) 賦值 <code>3</code>。印出它們相乘的總傷害值：<br><strong style='color: #00ffff;'>atk = 20<br>crit = 3<br>print(atk * crit)</strong>",
                 tip: "在 Python 中，乘號是半形星號 * 哦！",
                 placeholder: "# 建立變數並計算乘積輸出",
@@ -138,103 +165,184 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：字串拼接術",
+                title: "步驟 3/6: 字串拼接術",
                 text: "把不同的魔力字串連起來能引發共鳴。請將變數 <code>spell_name = 'Lightning'</code> 與字串 <code>' Bolt'</code> (注意有空格) 相加，並用 <code>print()</code> 輸出：<br><strong style='color: #39ff14;'>spell_name = 'Lightning'<br>print(spell_name + ' Bolt')</strong>",
                 tip: "字串相加會把文字無縫連在一起，這叫做字串拼接 (Concatenation)！",
-                placeholder: "# 拼接字串並輸出 'Lightning Bolt'",
+                placeholder: "# 字串拼接並印出結果",
                 validate: (code, output) => {
                     return code.includes("+") && code.includes("print") && output.trim() === "Lightning Bolt";
+                }
+            },
+            {
+                title: "步驟 4/6: 複製法力結界",
+                text: "我們可以使用字串乘法快速複製魔法特效。請印出將字串 <code>'Ice '</code> 重複 3 次 the 結果：<br><strong style='color: #ff007f;'>print('Ice ' * 3)</strong>",
+                tip: "字串乘以數字會將字串重複拷貝，注意 'Ice ' 後面帶有半形空格喔！",
+                placeholder: "# 重複輸出字串 3 次",
+                validate: (code, output) => {
+                    return code.includes("*") && code.includes("print") && output.trim() === "Ice Ice Ice";
+                }
+            },
+            {
+                title: "步驟 5/6: 均分法能藥水",
+                text: "你有 10 瓶藥水 <code>potions = 10</code>，請使用除法運算子 <code>/</code> 將藥水平分給 2 位勇者並印出結果：<br><strong style='color: #00ffff;'>potions = 10<br>print(potions / 2)</strong>",
+                tip: "在 Python 中，除法運算子是 /。除法運算的結果預設會是浮點數 (如 5.0)！",
+                placeholder: "# 建立 potions 變數並除以 2 輸出",
+                validate: (code, output) => {
+                    return code.includes("/") && code.includes("print") && parseFloat(output.trim()) === 5.0;
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：四則運算優先級",
+                text: "魔法計算遵循先乘除後加減。請建立算式 <code>10 + 5 * 2</code> 並用 <code>print()</code> 印出結果：<br><strong style='color: #39ff14;'>print(10 + 5 * 2)</strong>",
+                tip: "Python 會優先計算 5 * 2，所以結果應該是 20，而非 30！",
+                placeholder: "# 計算 10 + 5 * 2 並輸出",
+                validate: (code, output) => {
+                    return code.includes("+") && code.includes("*") && output.trim() === "20";
                 }
             }
         ]
     },
     4: {
-        name: "Lv.4 分支岔路 ｜ if - elif - else 條件分支",
-        enemyName: "地精法師",
-        enemySprite: "🧙",
-        enemyMaxHp: 75,
+        name: "Lv.4 分支岔路 ｜ If - elif - else 條件判斷",
+        enemyName: "幽靈守衛",
+        enemySprite: "👻",
+        enemyMaxHp: 80,
         steps: [
             {
-                title: "步驟 1/3: 基礎 If 治療條件",
-                text: "當地精打傷你時，你需要治療。如果你的生命值變數 <code>hp = 20</code> 小於 30，請用 <code>print()</code> 輸出 <code>'Heal'</code>：<br><strong style='color: #ff007f;'>hp = 20<br>if hp < 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Heal')</strong>",
-                tip: "注意：if 敘述末尾必須有冒號 :，且下一行必須縮排（按 4 個空格）！",
-                placeholder: "# 撰寫基礎 if 判斷式",
+                title: "步驟 1/6: 基礎 If 條件判斷",
+                text: "如果當前生命值低於 50 則印出 <code>'Danger'</code>。請宣告 <code>hp = 30</code>，並編寫 if 判斷式：<br><strong style='color: #ff007f;'>hp = 30<br>if hp < 50:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Danger')</strong>",
+                tip: "Python 對縮排 (Indentation) 非常嚴格！if 條件成立的代碼行前必須按 4 個空格（或 Tab 鍵）！",
+                placeholder: "# if 判斷式，注意冒號與縮排",
                 validate: (code, output) => {
-                    return code.includes("if") && code.includes(":") && output.trim() === "Heal";
+                    return code.includes("if") && code.includes(":") && output.trim() === "Danger";
                 }
             },
             {
-                title: "步驟 2/3: 屬性反制 If-Else",
-                text: "地精法師的防禦護盾會變換屬性。如果 <code>enemy_type = 'water'</code>，請輸出 <code>'thunder'</code>；否則輸出 <code>'fire'</code>。請宣告屬性並撰寫判斷式：<br><strong style='color: #00ffff;'>enemy_type = 'water'<br>if enemy_type == 'water':<br>&nbsp;&nbsp;&nbsp;&nbsp;print('thunder')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('fire')</strong>",
-                tip: "比較變數是否相等時，要使用兩個等號 == 哦！單等號 = 是賦值。",
-                placeholder: "# 撰寫 if-else 分支語法",
+                title: "步驟 2/6: 抉難 If-else 分支",
+                text: "如果魔力 <code>mana = 20</code> 大於或等於 30，印出 <code>'Cast'</code>，否則 (else) 印出 <code>'Wait'</code>：<br><strong style='color: #00ffff;'>mana = 20<br>if mana >= 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Cast')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Wait')</strong>",
+                tip: "else 必須和 if 對齊，且 else 後面也要加上冒號 : 哦！",
+                placeholder: "# 實作 if-else 分支語法",
                 validate: (code, output) => {
-                    return code.includes("if") && code.includes("else") && output.trim() === "thunder";
+                    return code.includes("else") && code.includes(":") && output.trim() === "Wait";
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：三分支判斷",
-                text: "根據當前魔力 <code>mp = 45</code> 決定招式：若 <code>mp > 80</code> 輸出 <code>'Meteor'</code>；大於 30 輸出 <code>'Fireball'</code>；否則輸出 <code>'Punch'</code>：<br><strong style='color: #39ff14;'>mp = 45<br>if mp > 80:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Meteor')<br>elif mp > 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Fireball')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Punch')</strong>",
-                tip: "多條件判斷在 Python 中使用 elif (Else If) 關鍵字。",
-                placeholder: "# 撰寫 if-elif-else 結構",
+                title: "步驟 3/6: Elif 多重判定條件",
+                text: "結界檢測！變數 <code>score = 85</code>，若大於等於 90 印出 <code>'A'</code>，若大於等於 80 (elif) 印出 <code>'B'</code>，其餘印出 <code>'C'</code>：<br><strong style='color: #39ff14;'>score = 85<br>if score >= 90:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('A')<br>elif score >= 80:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('B')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('C')</strong>",
+                tip: "elif 是 else if 的縮寫，能容納多個中間條件的判定。",
+                placeholder: "# 實作含 elif 的多重條件判斷",
                 validate: (code, output) => {
-                    return code.includes("if") && code.includes("elif") && code.includes("else") && output.trim() === "Fireball";
+                    return code.includes("elif") && code.includes(":") && output.trim() === "B";
+                }
+            },
+            {
+                title: "步驟 4/6: 零消耗技能判定",
+                text: "建立變數 <code>cost = 0</code>，如果 <code>cost</code> 等於 0 (雙等號 <code>==</code>)，印出 <code>'Free'</code>：<br><strong style='color: #ff007f;'>cost = 0<br>if cost == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Free')</strong>",
+                tip: "注意：在條件判斷中，比較是否『相等』要用兩個等號 ==，單個等號 = 是賦值變數喔！",
+                placeholder: "# 用 == 比較是否相等",
+                validate: (code, output) => {
+                    return code.includes("==") && output.trim() === "Free";
+                }
+            },
+            {
+                title: "步驟 5/6: 元素弱點檢測",
+                text: "建立字串變數 <code>element = 'fire'</code>。如果 <code>element</code> 等於 <code>'water'</code>，印出 <code>'Weak'</code>，否則印出 <code>'Normal'</code>：<br><strong style='color: #00ffff;'>element = 'fire'<br>if element == 'water':<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Weak')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Normal')</strong>",
+                tip: "字串相等的比對也適用 == 運算子，引號必須確實閉合。",
+                placeholder: "# 比對字串變數",
+                validate: (code, output) => {
+                    return code.includes("==") && output.trim() === "Normal";
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：狀態機判定",
+                text: "建立變數 <code>status = 'poison'</code>。如果狀態等於 <code>'freeze'</code> 印出 <code>'Frozen'</code>，否則印出 <code>'Active'</code>：<br><strong style='color: #39ff14;'>status = 'poison'<br>if status == 'freeze':<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Frozen')<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Active')</strong>",
+                tip: "這是狀態機控制的基礎，常用於 RPG 遊戲判定人物狀態。",
+                placeholder: "# 實戰 if-else 狀態判定",
+                validate: (code, output) => {
+                    return code.includes("if") && output.trim() === "Active";
                 }
             }
         ]
     },
     5: {
-        name: "Lv.5 冒險指南 ｜ 邏輯運算與比較運算",
-        enemyName: "寶箱怪",
-        enemySprite: "📦",
+        name: "Lv.5 冒險指南 ｜ 比較與邏輯運算子",
+        enemyName: "森林石魔",
+        enemySprite: "🗿",
         enemyMaxHp: 85,
         steps: [
             {
-                title: "步驟 1/3: 邏輯與 And 運算",
-                text: "寶箱怪有陷阱防護。若有鑰匙 <code>has_key = True</code> 且無詛咒 <code>is_cursed = False</code>，才能安全開啟寶箱並輸出 <code>'Open'</code>：<br><strong style='color: #ff007f;'>has_key = True<br>is_cursed = False<br>if has_key and not is_cursed:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Open')</strong>",
-                tip: "not 會翻轉布林值，not False 會得到 True。and 必須兩者都為 True 才成立。",
-                placeholder: "# 使用 and 與 not 進行判斷",
+                title: "步驟 1/6: 邏輯與 (And) 雙重條件",
+                text: "只有同時擁有鑰匙 <code>has_key = True</code> 與金幣 <code>has_gold = True</code> 才能開門。印出 <code>has_key and has_gold</code> 的布林結果：<br><strong style='color: #ff007f;'>has_key = True<br>has_gold = True<br>print(has_key and has_gold)</strong>",
+                tip: "and 運算子在兩邊條件皆為 True 時，才會回傳 True。",
+                placeholder: "# 宣告布林變數並印出 and 結果",
                 validate: (code, output) => {
-                    return code.includes("and") && code.includes("not") && output.trim() === "Open";
+                    return code.includes("and") && output.trim() === "True";
                 }
             },
             {
-                title: "步驟 2/3: 邏輯或 Or 運算",
-                text: "當你 <code>mp = 30</code> 大於 50 或是持有藥水 <code>has_potion = True</code>，魔法陣即為準備就緒狀態並輸出 <code>'Ready'</code>：<br><strong style='color: #00ffff;'>mp = 30<br>has_potion = True<br>if mp > 50 or has_potion:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Ready')</strong>",
-                tip: "or 運算子只要兩邊有一個是 True，整個條件就會成立。",
-                placeholder: "# 使用 or 邏輯運算子進行判斷",
+                title: "步驟 2/6: 邏輯或 (Or) 彈性條件",
+                text: "只要是騎士 <code>is_knight = False</code> 或法師 <code>is_mage = True</code> 其中之一即可進入。印出 <code>is_knight or is_mage</code>：<br><strong style='color: #00ffff;'>is_knight = False<br>is_mage = True<br>print(is_knight or is_mage)</strong>",
+                tip: "or 運算子只要兩邊有一個為 True，就會回傳 True！",
+                placeholder: "# 宣告變數並印出 or 邏輯運算",
                 validate: (code, output) => {
-                    return code.includes("or") && output.trim() === "Ready";
+                    return code.includes("or") && output.trim() === "True";
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：解除寶箱封印",
-                text: "寶箱怪的致命弱點：若怪物虛弱 <code>is_weak = True</code> 且你沒有盲目 <code>is_blind = False</code>，輸出 <code>'Attack'</code>：<br><strong style='color: #39ff14;'>is_weak = True<br>is_blind = False<br>if is_weak and not is_blind:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Attack')</strong>",
-                tip: "將邏輯運算子 and 與 not 結合，打擊寶箱怪吧！",
-                placeholder: "# 結合 and 與 not 進行實戰挑戰",
+                title: "步驟 3/6: 邏輯非 (Not) 否定魔法",
+                text: "反轉狀態！變數 <code>is_poisoned = False</code> (未中毒)。印出否定它的布林值：<br><strong style='color: #39ff14;'>is_poisoned = False<br>print(not is_poisoned)</strong>",
+                tip: "not 運算子會將 True 變 False，False 變 True。",
+                placeholder: "# 使用 not 反轉布林狀態並印出",
                 validate: (code, output) => {
-                    return code.includes("and") && code.includes("not") && output.trim() === "Attack";
+                    return code.includes("not") && output.trim() === "True";
+                }
+            },
+            {
+                title: "步驟 4/6: 大於比較運算子",
+                text: "比較等級。宣告 <code>level = 15</code>，用 <code>print()</code> 印出 <code>level > 10</code> 的布林比對結果：<br><strong style='color: #ff007f;'>level = 15<br>print(level > 10)</strong>",
+                tip: "比較運算子的結果都是布林值 (True 或 False)。",
+                placeholder: "# 大於比較運算子",
+                validate: (code, output) => {
+                    return code.includes(">") && output.trim() === "True";
+                }
+            },
+            {
+                title: "步驟 5/6: 不等於比較運算子",
+                text: "檢測法力是否不為零。宣告 <code>mp = 50</code>，使用不等於運算子 <code>!=</code> 印出 <code>mp != 0</code> 的布林判定：<br><strong style='color: #00ffff;'>mp = 50<br>print(mp != 0)</strong>",
+                tip: "在 Python 中，不等於使用驚嘆號與等號組成 != 符號。",
+                placeholder: "# 用 != 進行不等於判定",
+                validate: (code, output) => {
+                    return code.includes("!=") && output.trim() === "True";
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：多重複合條件",
+                text: "戰力檢測。宣告 <code>shield = 10</code> 及 <code>hp = 40</code>。請用 print 印出：護盾大於 5 且血量大於 30 的複合邏輯判定：<br><strong style='color: #39ff14;'>shield = 10<br>hp = 40<br>print(shield > 5 and hp > 30)</strong>",
+                tip: "多重比較可以用 logic 運算子 line 起來，例如 shield > 5 and hp > 30。",
+                placeholder: "# 結合比較運算子與 and 邏輯運算子",
+                validate: (code, output) => {
+                    return code.includes(">") && code.includes("and") && output.trim() === "True";
                 }
             }
         ]
     },
     6: {
-        name: "Lv.6 聚能魔法陣 ｜ while 條件迴圈",
+        name: "Lv.6 聚能魔法陣 ｜ While 條件迴圈",
         enemyName: "巨石兵",
-        enemySprite: "🗿",
+        enemySprite: "🤖",
         enemyMaxHp: 100,
         steps: [
             {
-                title: "步驟 1/3: 基礎 While 迴圈累加",
-                text: "巨石兵防禦極高，你需要用迴圈聚能！當 <code>power</code> 小於 5 時，將其每次加 1 並輸出。請建立 <code>power = 0</code> 並撰寫 <code>while</code> 迴圈：<br><strong style='color: #ff007f;'>power = 0<br>while power < 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;power = power + 1<br>&nbsp;&nbsp;&nbsp;&nbsp;print(power)</strong>",
-                tip: "while 迴圈會在條件符合時持續重複執行。注意不要造成無限迴圈 (Infinite Loop) 哦！",
-                placeholder: "# 撰寫 while 迴圈從 0 累加至 5",
+                title: "步驟 1/6: 基礎 While 迴圈計數",
+                text: "while 迴圈會在條件符合時重複執行。宣告 <code>count = 1</code>，當 <code>count <= 3</code> 時重複印出並遞增：<br><strong style='color: #ff007f;'>count = 1<br>while count <= 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(count)<br>&nbsp;&nbsp;&nbsp;&nbsp;count = count + 1</strong>",
+                tip: "千萬別忘了遞增計數 (count = count + 1)，否則會陷入無限迴圈而當機喔！",
+                placeholder: "# while 迴圈計數輸出 1 到 3",
                 validate: (code, output) => {
-                    return code.includes("while") && output.replace(/\s/g, "") === "12345";
+                    return code.includes("while") && output.replace(/\s/g, "") === "123";
                 }
             },
             {
-                title: "步驟 2/3: HP 緩慢恢復中",
+                title: "步驟 2/6: 削減怪物生命力",
                 text: "巨石兵拍擊了地面！若當前生命值 <code>hp = 10</code> 小於 50，每次加 10 並輸出當前 HP 數值：<br><strong style='color: #00ffff;'>hp = 10<br>while hp < 50:<br>&nbsp;&nbsp;&nbsp;&nbsp;hp = hp + 10<br>&nbsp;&nbsp;&nbsp;&nbsp;print(hp)</strong>",
                 tip: "每次迴圈增加數值時，可以用變數重新賦值（如 hp = hp + 10）。",
                 placeholder: "# 迴圈每次加 10 hp 並輸出",
@@ -243,12 +351,39 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：狂熱連擊",
-                text: "每次揮劍消耗 15 點精力 <code>energy = 50</code>。使用 while 迴圈，當精力值大於或等於 15 時，扣除 15 精力並輸出 <code>'Strike'</code>：<br><strong style='color: #39ff14;'>energy = 50<br>while energy >= 15:<br>&nbsp;&nbsp;&nbsp;&nbsp;energy = energy - 15<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Strike')</strong>",
-                tip: "大於或等於在 Python 中寫作 >= 運算子。",
-                placeholder: "# 使用 while 扣除能量並印出 Strike",
+                title: "步驟 3/6: 法力聚能儀式",
+                text: "法力初始 <code>mana = 10</code>。使用 while 迴圈，當 <code>mana < 40</code> 時，每次加上 10，最後印出 <code>mana</code> (印在迴圈外)：<br><strong style='color: #39ff14;'>mana = 10<br>while mana < 40:<br>&nbsp;&nbsp;&nbsp;&nbsp;mana = mana + 10<br>print(mana)</strong>",
+                tip: "印在迴圈外代表最後一行的 print(mana) 程式碼不能有縮排，必須頂格！",
+                placeholder: "# while 累積變數，並在迴圈外面印出結果",
                 validate: (code, output) => {
-                    return code.includes("while") && output.trim().split("\n").filter(x => x.trim() === "Strike").length === 3;
+                    return code.includes("while") && !code.includes("    print") && !code.includes("\tprint") && output.trim() === "40";
+                }
+            },
+            {
+                title: "步驟 4/6: 精力連擊 (重複輸出)",
+                text: "精力 <code>energy = 30</code>，使用 while 迴圈，當 <code>energy >= 10</code> 時，印出 <code>'Hit'</code>，且每次減去 10：<br><strong style='color: #ff007f;'>energy = 30<br>while energy >= 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Hit')<br>&nbsp;&nbsp;&nbsp;&nbsp;energy = energy - 10</strong>",
+                tip: "每次迴圈都要減少條件變數以保證迴圈在 3 次後停止。",
+                placeholder: "# 條件削減 while 迴圈",
+                validate: (code, output) => {
+                    return code.includes("while") && output.trim().split("\n").filter(x => x.trim() === "Hit").length === 3;
+                }
+            },
+            {
+                title: "步驟 5/6: 倒數計時計數器",
+                text: "建立計數器 <code>i = 5</code>。使用 while 迴圈，當 <code>i > 0</code> 時，印出 <code>i</code>，並每次將 <code>i</code> 減 1：<br><strong style='color: #00ffff;'>i = 5<br>while i > 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)<br>&nbsp;&nbsp;&nbsp;&nbsp;i = i - 1</strong>",
+                tip: "這可以用來實作冷卻時間或倒數計時器。",
+                placeholder: "# while 倒數計數器",
+                validate: (code, output) => {
+                    return code.includes("while") && output.replace(/\s/g, "") === "54321";
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：累積防護罩",
+                text: "護盾 <code>shield = 0</code>。使用 while 迴圈當 <code>shield < 30</code> 時每次加 10，最後印出 <code>shield</code> (迴圈外)：<br><strong style='color: #39ff14;'>shield = 0<br>while shield < 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;shield = shield + 10<br>print(shield)</strong>",
+                tip: "最後一行 print(shield) 絕對不能縮排，它會在迴圈跑完後印出最終護盾值 30。",
+                placeholder: "# 累積護盾並在迴圈外面印出",
+                validate: (code, output) => {
+                    return code.includes("while") && output.trim() === "30";
                 }
             }
         ]
@@ -260,7 +395,7 @@ const questData = {
         enemyMaxHp: 120,
         steps: [
             {
-                title: "步驟 1/3: 基礎 For 迴圈重複",
+                title: "步驟 1/6: 基礎 For 迴圈重複",
                 text: "分身妖狐分出了三個幻影！使用 <code>for</code> 迴圈與 <code>range(3)</code> 來發動三次 <code>'Slash'</code> (斬擊)：<br><strong style='color: #ff007f;'>for i in range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Slash')</strong>",
                 tip: "range(N) 會產生 0 到 N-1 的整數序列，是 for 迴圈的最佳拍檔。",
                 placeholder: "# 用 for 迴圈與 range 輸出 3 次 Slash",
@@ -269,7 +404,7 @@ const questData = {
                 }
             },
             {
-                title: "步驟 2/3: 數值加總魔法",
+                title: "步驟 2/6: 數值加總魔法",
                 text: "用 for 迴圈來計算 1 到 5 的累積魔力總和。建立 <code>total = 0</code>，用 for 迴圈迭代 <code>range(1, 6)</code> 並加總，最後在迴圈『外面』印出結果：<br><strong style='color: #00ffff;'>total = 0<br>for i in range(1, 6):<br>&nbsp;&nbsp;&nbsp;&nbsp;total = total + i<br>print(total)</strong>",
                 tip: "注意：最後的 print() 必須和 for 對齊（不要縮排），這樣才不會每次迴圈都印出結果哦！",
                 placeholder: "# 計算 1 加到 5 的總和並輸出",
@@ -278,12 +413,39 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：連續鎖定打擊",
-                text: "妖狐分身出 5 個實體。請用 for 迴圈迭代 <code>range(5)</code>，每次輸出 <code>'Attack ' + str(i)</code> (注意有空格) 以擊打所有狐妖：<br><strong style='color: #39ff14;'>for i in range(5):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Attack ' + str(i))</strong>",
-                tip: "i 變數是數字，字串拼接前必須用 str(i) 將其轉換為字串形態！",
-                placeholder: "# 用 for 迴圈印出 Attack 0 到 Attack 4",
+                title: "步驟 3/6: 偶數序列打擊",
+                text: "使用 <code>range(2, 7, 2)</code> 迴圈迭代。這會產生 2、4、6。在迴圈中印出每個迭代數字 <code>i</code>：<br><strong style='color: #39ff14;'>for i in range(2, 7, 2):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</strong>",
+                tip: "range(start, stop, step) 的第三個參數是步長，此處為 2。",
+                placeholder: "# 迭代偶數並印出",
                 validate: (code, output) => {
-                    return code.includes("for") && code.includes("range") && output.replace(/\s/g, "").includes("Attack0Attack1Attack2Attack3Attack4");
+                    return code.includes("for") && code.includes("range") && output.replace(/\s/g, "") === "246";
+                }
+            },
+            {
+                title: "步驟 4/6: 遍歷數值列表",
+                text: "我們也可以直接用 for 遍歷一個手寫的列表 <code>[3, 2, 1]</code> 並用 <code>print()</code> 印出每個元素以發動倒數擊退：<br><strong style='color: #ff007f;'>for i in [3, 2, 1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</strong>",
+                tip: "for x in list 語法能逐一提取列表中的每一個物品。",
+                placeholder: "# 遍歷數值列表",
+                validate: (code, output) => {
+                    return code.includes("for") && output.replace(/\s/g, "") === "321";
+                }
+            },
+            {
+                title: "步驟 5/6: 鎖定目標打擊",
+                text: "妖狐分身出 4 個實體。請用 for 迴圈迭代 <code>range(4)</code>，每次輸出 <code>'Target ' + str(i)</code> (注意有空格)：<br><strong style='color: #00ffff;'>for i in range(4):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Target ' + str(i))</strong>",
+                tip: "i 變數是數字，字串拼接前必須用 str(i) 將其轉換為字串形態！",
+                placeholder: "# 用 for 迴圈印出 Target 0 到 Target 3",
+                validate: (code, output) => {
+                    return code.includes("for") && code.includes("range") && output.replace(/\s/g, "").includes("Target0Target1Target2Target3");
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：雙重施法連擊",
+                text: "請用 for 迴圈搭配 <code>range(2)</code>，重複印出 <code>'Double Cast'</code> 兩次發動最後攻勢：<br><strong style='color: #39ff14;'>for i in range(2):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Double Cast')</strong>",
+                tip: "range(2) 會迴圈 2 次，索引分別為 0 與 1。",
+                placeholder: "# 重複輸出 Double Cast 兩次",
+                validate: (code, output) => {
+                    return code.includes("for") && output.trim().split("\n").filter(x => x.trim() === "Double Cast").length === 2;
                 }
             }
         ]
@@ -292,19 +454,19 @@ const questData = {
         name: "Lv.8 卷軸收納盒 ｜ List (列表) 基礎操作",
         enemyName: "貪婪史萊姆",
         enemySprite: "🧪",
-        enemyMaxHp: 140,
+        enemyMaxHp: 120,
         steps: [
             {
-                title: "步驟 1/3: 建立你的收納列表",
+                title: "步驟 1/6: 建立你的收納列表",
                 text: "List (列表) 可以存放多項物件。請建立一個名為 <code>inventory</code> (背包) 的列表，包含 <code>'sword'</code>、<code>'shield'</code>、<code>'potion'</code> 三個字串，並將其印出：<br><strong style='color: #ff007f;'>inventory = ['sword', 'shield', 'potion']<br>print(inventory)</strong>",
                 tip: "Python 的列表使用中括號 []，裡面的元素用逗號隔開。",
-                placeholder: "# 建立包含三個字串的列表並印出",
+                placeholder: "# 建立包含三個字串 the 列表並印出",
                 validate: (code, output) => {
                     return code.includes("[") && code.includes("]") && output.includes("sword") && output.includes("potion");
                 }
             },
             {
-                title: "步驟 2/3: 抽取你的主要武器",
+                title: "步驟 2/6: 抽取你的主要武器",
                 text: "請輸出 <code>inventory</code> 背包列表中的第一個元素（索引值為 0 的元素）來擊碎史萊姆的核心：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>print(inventory[0])</strong>",
                 tip: "列表的索引從 0 開始，第一個元素是 [0]，第二個是 [1]。",
                 placeholder: "# 輸出列表的第一個元素 [0]",
@@ -313,12 +475,39 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：添加卷軸與查數",
-                text: "史萊姆吞了你的道具！請使用 <code>.append('scroll')</code> 將新道具加入背包，並輸出背包目前的道具數量（使用 <code>len()</code> 函數）：<br><strong style='color: #39ff14;'>inventory = ['sword', 'shield', 'potion']<br>inventory.append('scroll')<br>print(len(inventory))</strong>",
-                tip: "len(list) 函數能回傳列表的長度。原本有 3 個，追加 1 個後應為 4 個。",
-                placeholder: "# 使用 append 添加道具並印出 len 長度",
+                title: "步驟 3/6: 查詢背包物品數量",
+                text: "請使用 <code>len()</code> 函數獲取 <code>inventory</code> 列表的長度並印出它：<br><strong style='color: #39ff14;'>inventory = ['sword', 'shield', 'potion']<br>print(len(inventory))</strong>",
+                tip: "len(list) 可以回傳列表包含的物件總個數。",
+                placeholder: "# 輸出 inventory 列表的長度",
                 validate: (code, output) => {
-                    return code.includes("append") && code.includes("len") && output.trim() === "4";
+                    return code.includes("len") && output.trim() === "3";
+                }
+            },
+            {
+                title: "步驟 4/6: 添加新魔法道具",
+                text: "史萊姆爆出了新道具！請使用 <code>.append('scroll')</code> 往列表末端添加道具，最後印出 <code>inventory</code> 列表：<br><strong style='color: #ff007f;'>inventory = ['sword', 'shield', 'potion']<br>inventory.append('scroll')<br>print(inventory)</strong>",
+                tip: "使用 list.append(item) 可以在列表最後方追加一個新元素。",
+                placeholder: "# 使用 append 追加 scroll 並印出列表",
+                validate: (code, output) => {
+                    return code.includes("append") && output.includes("scroll") && output.includes("potion");
+                }
+            },
+            {
+                title: "步驟 5/6: 丟棄笨重盾牌",
+                text: "背包過重！請使用 <code>.remove('shield')</code> 移除列表中的盾牌，最後印出 <code>inventory</code> 列表：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>inventory.remove('shield')<br>print(inventory)</strong>",
+                tip: "list.remove(value) 會尋找列表中的第一個指定內容並刪除它。",
+                placeholder: "# 使用 remove 移除 shield 並印出列表",
+                validate: (code, output) => {
+                    return code.includes("remove") && !output.includes("shield") && output.includes("sword");
+                }
+            },
+            {
+                title: "步驟 6/6: 實戰挑戰：更新裝備武器",
+                text: "請把背包中第二個道具（索引為 1 的盾牌）覆寫修改成 <code>'greatsword'</code> 並印出列表：<br><strong style='color: #39ff14;'>inventory = ['sword', 'shield', 'potion']<br>inventory[1] = 'greatsword'<br>print(inventory)</strong>",
+                tip: "列表的特定元素可以直接用 list[index] = new_value 來修改。",
+                placeholder: "# 修改列表索引為 1 的元素並印出",
+                validate: (code, output) => {
+                    return code.includes("[1]") && output.includes("greatsword") && !output.includes("shield");
                 }
             }
         ]
@@ -327,10 +516,10 @@ const questData = {
         name: "Lv.9 終極契約 ｜ 自訂 Function (函式) 定義",
         enemyName: "雙頭奇美拉",
         enemySprite: "🦁",
-        enemyMaxHp: 180,
+        enemyMaxHp: 150,
         steps: [
             {
-                title: "步驟 1/3: 定義第一個魔法招式",
+                title: "步驟 1/5: 定義第一個魔法招式",
                 text: "Function (函式) 可以封裝你的重複魔術。請定義一個名為 <code>cast_magic</code> 的無參數函式，功能為輸出 <code>'Fire'</code>，並在下方呼叫它：<br><strong style='color: #ff007f;'>def cast_magic():<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Fire')<br><br>cast_magic()</strong>",
                 tip: "定義函式使用 def 關鍵字，結尾要加冒號 :，內部邏輯要縮排，最後呼叫要帶括號 ()！",
                 placeholder: "# 用 def 定義 cast_magic 函式並呼叫",
@@ -339,21 +528,39 @@ const questData = {
                 }
             },
             {
-                title: "步驟 2/3: 注入威力的傷害參數",
-                text: "給函式傳入參數能改變其效果。定義 <code>deal_damage(dmg)</code>，功能為印出 <code>'Deal ' + str(dmg) + ' damage'</code>。呼叫它並傳入數值 <code>100</code>：<br><strong style='color: #00ffff;'>def deal_damage(dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Deal ' + str(dmg) + ' damage')<br><br>deal_damage(100)</strong>",
-                tip: "函式的小括號內可以放變數做為參數，呼叫時再將真實數據傳入。",
-                placeholder: "# 定義 deal_damage 帶入參數 dmg 並呼叫之",
+                title: "步驟 2/5: 帶有單一參數的招式",
+                text: "現在定義一個接受傷害參數的函式 <code>attack(dmg)</code>，功能為印出 <code>'Dealt ' + str(dmg)</code>。傳入 <code>50</code> 呼叫它：<br><strong style='color: #00ffff;'>def attack(dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Dealt ' + str(dmg))<br><br>attack(50)</strong>",
+                tip: "傳入的 dmg 在函式中直接做為變數使用，拼裝輸出前必須先用 str(dmg) 轉字串！",
+                placeholder: "# 定義單參數函式並傳入 50 呼叫",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("deal_damage") && output.trim() === "Deal 100 damage";
+                    return code.includes("def") && code.includes("attack") && output.trim() === "Dealt 50";
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：自訂召喚招式",
-                text: "奇美拉飛了起來！定義一個接受名字與傷害雙參數的函式 <code>spell_attack(name, dmg)</code>，功能為印出 <code>'Cast ' + name + ' for ' + str(dmg) + '!'</code>。傳入 <code>'Ice'</code> 與 <code>80</code> 呼叫它：<br><strong style='color: #39ff14;'>def spell_attack(name, dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Cast ' + name + ' for ' + str(dmg) + '!')<br><br>spell_attack('Ice', 80)</strong>",
-                tip: "函式可以接受多個參數，用逗號隔開即可。",
-                placeholder: "# 定義 spell_attack 雙參數函式並呼叫",
+                title: "步驟 3/5: 自訂雙參數召喚術",
+                text: "定義一個接受名字與次數雙參數的函式 <code>spawn_clone(name, num)</code>，功能為印出 <code>name * num</code>。傳入 <code>'Shadow'</code> 與 <code>2</code> 呼叫它：<br><strong style='color: #39ff14;'>def spawn_clone(name, num):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(name * num)<br><br>spawn_clone('Shadow', 2)</strong>",
+                tip: "函式可以接受多個參數，中間用半形逗號隔開即可。",
+                placeholder: "# 定義 spawn_clone 雙參數函式並呼叫",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("spell_attack") && output.trim() === "Cast Ice for 80!";
+                    return code.includes("def") && code.includes("spawn_clone") && output.trim() === "ShadowShadow";
+                }
+            },
+            {
+                title: "步驟 4/5: 帶有數值計算的招式",
+                text: "定義一個 <code>double_dmg(dmg)</code> 函式，功能為輸出 <code>dmg * 2</code> 的乘積結果。傳入 <code>30</code> 呼叫它：<br><strong style='color: #ff007f;'>def double_dmg(dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(dmg * 2)<br><br>double_dmg(30)</strong>",
+                tip: "函式內可以直接使用算術運算，並用 print 印出計算結果。",
+                placeholder: "# 定義 double_dmg 並傳入 30 呼叫",
+                validate: (code, output) => {
+                    return code.includes("def") && code.includes("double_dmg") && output.trim() === "60";
+                }
+            },
+            {
+                title: "步驟 5/5: 實戰挑戰：自訂問候語招式",
+                text: "定義一個 <code>greet_hero(name)</code> 函式，印出 <code>'Hello ' + name</code>。傳入 <code>'Bison'</code> 呼叫它：<br><strong style='color: #39ff14;'>def greet_hero(name):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Hello ' + name)<br><br>greet_hero('Bison')</strong>",
+                tip: "這是最基礎的字串傳入與輸出示範，記得 Hello 後面有空格。",
+                placeholder: "# 定義 greet_hero 並傳入 Bison 呼叫",
+                validate: (code, output) => {
+                    return code.includes("def") && code.includes("greet_hero") && output.trim() === "Hello Bison";
                 }
             }
         ]
@@ -362,11 +569,11 @@ const questData = {
         name: "Lv.10 封魔戰役 ｜ Return (傳回值) 與終極對決",
         enemyName: "深淵大魔王",
         enemySprite: "👿",
-        enemyMaxHp: 250,
+        enemyMaxHp: 200,
         steps: [
             {
-                title: "步驟 1/3: 傳回雙倍魔力結果",
-                text: "終極戰役開始！大魔王身上有反噬結界。請定義 <code>calc_dmg(base)</code> 函式，使用 <code>return</code> 關鍵字傳回 <code>base * 2</code>。印出傳入 50 的呼叫結果：<br><strong style='color: #ff007f;'>def calc_dmg(base):<br>&nbsp;&nbsp;&nbsp;&nbsp;return base * 2<br><br>print(calc_dmg(50))</strong>",
+                title: "步驟 1/5: 傳回雙倍魔力結果",
+                text: "終極戰役開始！請定義 <code>calc_dmg(base)</code> 函式，使用 <code>return</code> 關鍵字傳回 <code>base * 2</code>。印出傳入 50 的呼叫結果：<br><strong style='color: #ff007f;'>def calc_dmg(base):<br>&nbsp;&nbsp;&nbsp;&nbsp;return base * 2<br><br>print(calc_dmg(50))</strong>",
                 tip: "return 關鍵字會將計算好的數據傳出函式外，你可以用 print 把它印出來。",
                 placeholder: "# 使用 return 傳回值並用 print 輸出",
                 validate: (code, output) => {
@@ -374,7 +581,7 @@ const questData = {
                 }
             },
             {
-                title: "步驟 2/3: 疊加兩股爆擊魔力",
+                title: "步驟 2/5: 疊加兩股爆擊魔力",
                 text: "定義 <code>total_dmg(a, b)</code>，利用 <code>return</code> 傳回兩數之和 <code>a + b</code>。使用 print 印出傳入 120 與 80 的呼叫結果：<br><strong style='color: #00ffff;'>def total_dmg(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a + b<br><br>print(total_dmg(120, 80))</strong>",
                 tip: "return 會打斷函式並立刻將結果返回，後方的代碼將不再執行。",
                 placeholder: "# 定義加總函式並印出 total_dmg(120, 80) 結果",
@@ -383,17 +590,35 @@ const questData = {
                 }
             },
             {
-                title: "步驟 3/3: 實戰挑戰：終極禁忌魔法",
-                text: "大魔王只剩 250 HP，請完成終極禁忌魔法。定義 <code>ultimate_spell(atk)</code> 函式：如果 <code>atk > 100</code> 傳回 <code>atk * 3</code>，否則傳回 <code>atk</code>。印出傳入 <code>100</code> (原力傷害) 呼叫該函式的傳回值：<br><strong style='color: #39ff14;'>def ultimate_spell(atk):<br>&nbsp;&nbsp;&nbsp;&nbsp;if atk > 100:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return atk * 3<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return atk<br><br>print(ultimate_spell(100))</strong>",
-                tip: "在 return 中可以使用條件分支。100 不大於 100，所以應傳回 100！這是一次完美的冒險！",
-                placeholder: "# 實作含條件分支 return 的終極魔法並印出結果",
+                title: "步驟 3/5: 條件分支 Return 的威力",
+                text: "定義 <code>test(dmg)</code> 函式：如果 <code>dmg > 50</code> 傳回 <code>'Strong'</code>，否則傳回 <code>'Weak'</code>。印出傳入 <code>60</code> 呼叫結果：<br><strong style='color: #39ff14;'>def test(dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;if dmg > 50:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 'Strong'<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 'Weak'<br><br>print(test(60))</strong>",
+                tip: "函式遇到符合的條件 return 後，後續的 else 分支就不會被執行。",
+                placeholder: "# 實作含 if-else return 判定的函式並印出",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("return") && output.trim() === "100";
+                    return code.includes("def") && code.includes("return") && output.trim() === "Strong";
+                }
+            },
+            {
+                title: "步驟 4/5: 計算爆擊乘積 Return",
+                text: "定義 <code>calc_crit(atk, mult)</code> 函式，傳回 <code>atk * mult</code> 的結果。印出傳入 <code>50</code> 與 <code>3</code> 呼叫它的傳回值：<br><strong style='color: #ff007f;'>def calc_crit(atk, mult):<br>&nbsp;&nbsp;&nbsp;&nbsp;return atk * mult<br><br>print(calc_crit(50, 3))</strong>",
+                tip: "多參數的計算也可以直接 return 傳回。",
+                placeholder: "# 定義計算爆擊 return 函式並印出結果",
+                validate: (code, output) => {
+                    return code.includes("def") && code.includes("return") && output.trim() === "150";
+                }
+            },
+            {
+                title: "步驟 5/5: 實戰挑戰：終極死亡判定",
+                text: "魔王最後一擊！定義 <code>is_dead(hp)</code> 函式，如果 <code>hp <= 0</code> 傳回 <code>True</code>，否則傳回 <code>False</code>。印出傳入 <code>10</code> 呼叫結果：<br><strong style='color: #39ff14;'>def is_dead(hp):<br>&nbsp;&nbsp;&nbsp;&nbsp;if hp <= 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br><br>print(is_dead(10))</strong>",
+                tip: "10 不小於或等於 0，所以此處呼叫應傳回 False！",
+                placeholder: "# 實作 boolean return 的死亡判定並輸出",
+                validate: (code, output) => {
+                    return code.includes("def") && code.includes("return") && output.trim() === "False";
                 }
             }
         ]
     }
-};
+}
 
 // 3. Pyodide 執行環境初始化 (Pyodide Initialization)
 let pyodideInstance = null;
