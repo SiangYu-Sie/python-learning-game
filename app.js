@@ -973,14 +973,22 @@ function gainExp(amount) {
 }
 
 // 6. 事件綁定 (Event Listeners)
-document.getElementById("castSpellBtn").addEventListener("click", castSpell);
-document.getElementById("clearConsoleBtn").addEventListener("click", clearConsole);
-document.getElementById("helpBtn").addEventListener("click", startTutorial);
+const castSpellBtn = document.getElementById("castSpellBtn");
+if (castSpellBtn) castSpellBtn.addEventListener("click", castSpell);
+
+const clearConsoleBtn = document.getElementById("clearConsoleBtn");
+if (clearConsoleBtn) clearConsoleBtn.addEventListener("click", clearConsole);
+
+const helpBtn = document.getElementById("helpBtn");
+if (helpBtn) helpBtn.addEventListener("click", startTutorial);
 
 // 返回地圖按鈕事件：物理跳轉回首頁 index.html
-document.getElementById("mapBackBtn").addEventListener("click", () => {
-    window.location.href = "index.html?v=2.0.0";
-});
+const mapBackBtn = document.getElementById("mapBackBtn");
+if (mapBackBtn) {
+    mapBackBtn.addEventListener("click", () => {
+        window.location.href = "index.html?v=2.0.0";
+    });
+}
 
 document.getElementById("modalCloseBtn").addEventListener("click", () => {
     if (tutorialActive) {
