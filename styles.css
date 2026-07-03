@@ -25,10 +25,10 @@ body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
 }
 
@@ -60,11 +60,12 @@ body {
 .game-container {
     width: 100%;
     max-width: 1400px;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     gap: 1.5rem;
+    overflow: hidden;
 }
 
 /* Status Panel (狀態面板) */
@@ -195,7 +196,7 @@ body {
     display: flex;
     gap: 1.5rem;
     flex-grow: 1;
-    min-height: 550px;
+    min-height: 0;
 }
 
 .panel {
