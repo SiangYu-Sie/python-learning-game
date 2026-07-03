@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyQuest (畢松勇者傳說) 10等級關卡與逐步引導開發計畫書</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0c0721;
+            --panel-bg: rgba(22, 12, 49, 0.75);
+            --border-color: rgba(139, 92, 246, 0.3);
+            --neon-pink: #ff007f;
+            --neon-blue: #00ffff;
+            --neon-green: #39ff14;
+            --neon-purple: #8b5cf6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 5rem;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(90px);
+            pointer-events: none;
+            opacity: 0.15;
+        }
+        .orb-1 { width: 450px; height: 450px; background: var(--neon-pink); top: 5%; left: -100px; }
+        .orb-2 { width: 550px; height: 550px; background: var(--neon-blue); bottom: 15%; right: -200px; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            padding: 3rem 2rem;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--neon-pink), var(--neon-purple), var(--neon-blue));
+        }
+
+        .game-title {
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-purple);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--neon-blue);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .desc {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .progress-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50px;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 24px;
+            width: 0%;
+            background: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
+            border-radius: 50px;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .section-header {
+            margin: 3.5rem 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-header i {
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            text-shadow: 0 0 8px var(--neon-pink);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* 10 Levels Grid */
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .level-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            transition: 0.2s ease;
+        }
+
+        .level-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.1);
+        }
+
+        .level-num {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.85rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        .level-card h3 {
+            font-size: 1.15rem;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            padding-right: 3.5rem;
+        }
+
+        .level-card h4 {
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .level-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Guideline box */
+        .guide-box {
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem 0;
+        }
+
+        .guide-box h3 {
+            font-size: 1.1rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guide-box p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: #c7d2fe;
+        }
+
+        /* Task Cards */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .task-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1);
+        }
+
+        .task-card.completed {
+            opacity: 0.55;
+            border-color: rgba(57, 255, 20, 0.2);
+            background: rgba(13, 26, 20, 0.4);
+        }
+
+        .task-checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            padding-top: 0.25rem;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--neon-purple);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+            background: transparent;
+        }
+
+        .task-checkbox:checked {
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .task-checkbox:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #000000;
+            position: absolute;
+            font-size: 0.75rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .task-body {
+            flex-grow: 1;
+        }
+
+        .task-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .task-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+            transition: 0.2s;
+        }
+
+        .completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-meta-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-prio-high { background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid rgba(255, 0, 127, 0.3); }
+        .badge-prio-medium { background: rgba(139, 92, 246, 0.15); color: var(--neon-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-prio-low { background: rgba(0, 255, 255, 0.15); color: var(--neon-blue); border: 1px solid rgba(0, 255, 255, 0.3); }
+
+        .task-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .task-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .task-detail-item h5 {
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .task-detail-item p {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--border-color);
+            top: 0;
+            bottom: 0;
+            left: 7px;
+        }
+
+        .timeline-node {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--neon-purple);
+            border: 3px solid var(--bg-color);
+            left: -25px;
+            top: 5px;
+            z-index: 2;
+            box-shadow: 0 0 8px var(--neon-purple);
+        }
+
+        .timeline-node.active::before {
+            background: var(--neon-blue);
+            box-shadow: 0 0 12px var(--neon-blue);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .timeline-content h4 {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="game-title">PyQuest</div>
+            <div class="subtitle">畢松勇者傳說 ｜ 10等級關卡與逐步引導開發計畫</div>
+            <div class="desc">
+                本專案規劃一個專為 Python (程式語言) 初學者設計的「Step-by-step Guided Learning (一步步引導式學習)」網站。我們將學習內容細分為 10 個由淺入深的難易度等級，每個等級皆有對應的 RPG (角色扮演遊戲) 關卡。學習時會逐步提示與引導使用者在前端沙盒中撰寫並執行代碼，透過真實的 Python 解譯回饋建立絕佳的成就感。
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text" id="progressText">0% Completed</div>
+            </div>
+        </header>
+
+        <!-- 10 Levels Definition -->
+        <div class="section-header">
+            <i class="fa-solid fa-layer-group"></i>
+            <h2>Python 10 等級學習內容與關卡規劃</h2>
+        </div>
+
+        <div class="guide-box">
+            <h3><i class="fa-solid fa-shoe-prints"></i> 一步一步引導機制 (Step-by-step Guidance)</h3>
+            <p>
+                每個等級的關卡將細分為三個引導階段：<br>
+                <strong>1. 觀察與提示</strong>：使用 Guided Highlights (引導高亮) 標記編輯器，顯示操作說明，如：「請在此處輸入 x = 10 儲存你的魔力」。<br>
+                <strong>2. 嘗試與執行</strong>：點擊執行，Pyodide 在前端沙盒執行後，顯示成功充能的角色動畫。<br>
+                <strong>3. 實戰挑戰</strong>：要求使用者寫出能對怪物打出致命一擊的 Python 語句，正確後 Level Up (升級) 並解鎖下一關。
+            </p>
+        </div>
+
+        <div class="levels-grid">
+            <!-- Lv 1 -->
+            <div class="level-card">
+                <span class="level-num">Lv.1</span>
+                <h4>勇者覺醒</h4>
+                <h3>print() 與文字輸出</h3>
+                <p>引導學習 print() 函數，在終端機輸出勇者名字，發送第一個覺醒信號。</p>
+            </div>
+            <!-- Lv 2 -->
+            <div class="level-card">
+                <span class="level-num">Lv.2</span>
+                <h4>魔法口袋</h4>
+                <h3>變數與基本資料型態</h3>
+                <p>認識變數概念與整數、浮點數、字串型態，將魔力值儲存於口袋變數中。</p>
+            </div>
+            <!-- Lv 3 -->
+            <div class="level-card">
+                <span class="level-num">Lv.3</span>
+                <h4>煉金工坊</h4>
+                <h3>算術運算與字串操作</h3>
+                <p>學習加減乘除與字串相加，用代碼計算物理傷害或合成魔法藥水。</p>
+            </div>
+            <!-- Lv 4 -->
+            <div class="level-card">
+                <span class="level-num">Lv.4</span>
+                <h4>分支岔路</h4>
+                <h3>if - elif - else 條件分支</h3>
+                <p>根據怪物屬性，利用 If-else (條件分支) 判斷式，選擇對應魔法發動攻擊或防守。</p>
+            </div>
+            <!-- Lv 5 -->
+            <div class="level-card">
+                <span class="level-num">Lv.5</span>
+                <h4>冒險指南</h4>
+                <h3>邏輯運算與比較運算</h3>
+                <p>使用 and, or, not 以及比較運算子，破解複雜的寶箱陷阱與結界挑戰。</p>
+            </div>
+            <!-- Lv 6 -->
+            <div class="level-card">
+                <span class="level-num">Lv.6</span>
+                <h4>聚能魔法陣</h4>
+                <h3>while 條件迴圈</h3>
+                <p>使用 While Loop (While 迴圈)，在自身 HP 大於特定比例時持續聚能，施展大絕招。</p>
+            </div>
+            <!-- Lv 7 -->
+            <div class="level-card">
+                <span class="level-num">Lv.7</span>
+                <h4>分身斬</h4>
+                <h3>for 迭代迴圈與 range()</h3>
+                <p>學習 For Loop (For 迴圈) 與 range() 函數，發動分身連續劍技一次擊倒複數敵人。</p>
+            </div>
+            <!-- Lv 8 -->
+            <div class="level-card">
+                <span class="level-num">Lv.8</span>
+                <h4>卷軸收納盒</h4>
+                <h3>List (列表) 基礎操作</h3>
+                <p>學習 List (列表) 容器，用於儲存背包中的裝備、藥水，進行增刪查改操作。</p>
+            </div>
+            <!-- Lv 9 -->
+            <div class="level-card">
+                <span class="level-num">Lv.9</span>
+                <h4>終極契約</h4>
+                <h3>自訂 Function (函式) 定義</h3>
+                <p>定義並命名自己的魔法招式，帶入不同的魔法參數 (Arguments)，封裝重複的技能邏輯。</p>
+            </div>
+            <!-- Lv 10 -->
+            <div class="level-card">
+                <span class="level-num">Lv.10</span>
+                <h4>封魔戰役</h4>
+                <h3>Return (傳回值) 與終極對決</h3>
+                <p>學習 Return (傳回值) 機制，使自訂函式傳回傷害數值，擊敗深淵大魔王完成冒險。</p>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="section-header">
+            <i class="fa-solid fa-list-check"></i>
+            <h2>任務拆解與排程規劃 (Task List)</h2>
+        </div>
+
+        <div class="task-list" id="taskList">
+            <!-- Task 1 -->
+            <div class="task-card" data-task-id="1">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T1: 基礎專案結構與 Pyodide (Wasm) 執行沙盒建立</span>
+                        <span class="task-meta-badge badge-prio-high">Priority: High</span>
+                    </div>
+                    <p class="task-desc">
+                        建置專案目錄，引入 Pyodide CDN (內容傳遞網路) 並於 JavaScript 內進行非同步初始化。實作一個在網頁直接執行 Python 語法並將標準輸出導向至網頁 Console (主控台) 的底層模組。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>3.0 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>index.html, styles.css, app.js</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>網頁加載時自動載入 Pyodide，輸入 print(123) 點擊執行，畫面的虛擬終端能印出 "123"。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task-card" data-task-id="2">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T2: 10等級狀態引擎與 Step-by-step 引導狀態機開發</span>
+                        <span class="task-meta-badge badge-prio-high">Priority: High</span>
+                    </div>
+                    <p class="task-desc">
+                        開發關卡狀態機，管理 1-10 個 Level 狀態。設計多步驟 (Step-by-step) 引導狀態引擎，能夠讓每個關卡劃分為「提示、嘗試、實戰挑戰」三個連續進度，並能利用 Local Storage (本地儲存空間) 保存當前進度。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>4.5 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>gameEngine.js, state.js</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>重整網頁後，玩家的角色等級、經驗值以及當前關卡的步驟進度能正確載入復原。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="task-card" data-task-id="3">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T3: 程式碼編輯器與 Guided Highlights (引導高亮) 元件實作</span>
+                        <span class="task-meta-badge badge-prio-medium">Priority: Medium</span>
+                    </div>
+                    <p class="task-desc">
+                        實作程式碼編輯介面，加入行號標記。開發引導提示氣泡 (Tooltip) 與高亮元件，能配合關卡進度在程式碼特定行或特定輸入位置顯示閃爍引導框，協助初學者「一步步」跟隨操作。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>4.0 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>editor.js, guideUi.js, styles.css</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>進入步驟 1 時，編輯器會彈出引導氣泡，程式碼輸入區會出現黃色邊框提示引導。輸入完成後提示會自動淡出。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 4 -->
+            <div class="task-card" data-task-id="4">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T4: 基礎關卡內容與代碼驗證器設計 (Lv.1 ~ Lv.5)</span>
+                        <span class="task-meta-badge badge-prio-high">Priority: High</span>
+                    </div>
+                    <p class="task-desc">
+                        設計前 5 個等級的引導文字與代碼邏輯驗證器。包含 Lv.1 (輸出)、Lv.2 (變數資料型態)、Lv.3 (算術運算與字串拼接)、Lv.4 (If-else 分支)、Lv.5 (邏輯運算)。開發 Python 代碼解析器以捕捉 Traceback (追溯調試錯誤)。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>5.5 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>levels_1_5.js, validator.js</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>逐一測試 1-5 關的代碼：輸入錯誤代碼會顯示教學引導建議，正確則能推動 RPG 怪物扣血並引導至下一步。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 5 -->
+            <div class="task-card" data-task-id="5">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T5: 進階關卡內容與代碼驗證器設計 (Lv.6 ~ Lv.10)</span>
+                        <span class="task-meta-badge badge-prio-high">Priority: High</span>
+                    </div>
+                    <p class="task-desc">
+                        設計後 5 個等級的教學內容與驗證邏輯。包含 Lv.6 (While 迴圈)、Lv.7 (For 迴圈與 range)、Lv.8 (List 列表存取)、Lv.9 (自訂 Function 定義)、Lv.10 (Return 傳回值大對決)。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>5.5 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>levels_6_10.js, validator.js</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>測試定義一個 function add(a,b) return a+b 並執行，系統應檢測其是否返回正確數值以確認是否擊殺 Boss。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 6 -->
+            <div class="task-card" data-task-id="6">
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" onchange="toggleTask(this)">
+                </div>
+                <div class="task-body">
+                    <div class="task-header-row">
+                        <span class="task-title">T6: RPG 戰鬥動畫特效與成就解鎖優化</span>
+                        <span class="task-meta-badge badge-prio-low">Priority: Low</span>
+                    </div>
+                    <p class="task-desc">
+                        優化 UI/UX 視覺效果，在執行正確時加入火球、閃電、治癒等 CSS 卡通風格粒子動效。實作 Level Up (升級) 的滿版亮光動效，以及成就勳章彈窗，提供強大的成就感回饋。
+                    </p>
+                    <div class="task-details-grid">
+                        <div class="task-detail-item">
+                            <h5>預估工時</h5>
+                            <p>4.0 小時</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>異動檔案範圍</h5>
+                            <p>effects.js, achievements.js, styles.css</p>
+                        </div>
+                        <div class="task-detail-item">
+                            <h5>驗證方法 (Verification)</h5>
+                            <p>過關時角色發光，彈出「Lv.X 升級！」大標題，並伴隨粒子炸開動畫與成就獲得提示。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="section-header">
+            <i class="fa-solid fa-timeline"></i>
+            <h2>開發排程時間軸 (Timeline)</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-node active">
+                <div class="timeline-content">
+                    <h4>階段 1: 核心技術建置 (T1 & T2)</h4>
+                    <p>打通 Pyodide 前端執行沙盒，並寫好 10 等級狀態機與「一步步引導」的狀態控制邏輯。</p>
+                </div>
+            </div>
+            <div class="timeline-node">
+                <div class="timeline-content">
+                    <h4>階段 2: 編輯器 UI 與引導介面開發 (T3)</h4>
+                    <p>實作代碼編輯器，並開發能配合引導步驟在畫面上閃爍高亮與氣泡提示的元件。</p>
+                </div>
+            </div>
+            <div class="timeline-node">
+                <div class="timeline-content">
+                    <h4>階段 3: 10 個等級關卡設計與測試 (T4 & T5)</h4>
+                    <p>分段開發 1 到 10 級的 Python 教學題庫與對應的代碼邏輯驗證引擎。</p>
+                </div>
+            </div>
+            <div class="timeline-node">
+                <div class="timeline-content">
+                    <h4>階段 4: 戰鬥特效與成就感包裝 (T6)</h4>
+                    <p>導入華麗的 CSS 特效、升級畫面與成就系統，將整個網站打造成一款沉浸式的 RPG 遊戲。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const total = checkboxes.length;
+            let completed = 0;
+            
+            checkboxes.forEach(cb => {
+                const card = cb.closest('.task-card');
+                if (cb.checked) {
+                    completed++;
+                    card.classList.add('completed');
+                } else {
+                    card.classList.remove('completed');
+                }
+            });
+            
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = percentage + '% Completed (' + completed + '/' + total + ')';
+        }
+
+        function toggleTask(checkbox) {
+            updateProgress();
+            
+            const taskCard = checkbox.closest('.task-card');
+            const taskId = taskCard.getAttribute('data-task-id');
+            localStorage.setItem('pyquest_10l_task_' + taskId, checkbox.checked);
+        }
+
+        window.addEventListener('load', () => {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(cb => {
+                const card = cb.closest('.task-card');
+                const taskId = card.getAttribute('data-task-id');
+                const savedState = localStorage.getItem('pyquest_10l_task_' + taskId);
+                if (savedState === 'true') {
+                    cb.checked = true;
+                }
+            });
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

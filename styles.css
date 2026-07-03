@@ -1,0 +1,813 @@
+/* CSS (階層式樣式表) 設計：PyQuest 遊戲化風格 */
+
+:root {
+    --bg-color: #080417;
+    --panel-bg: rgba(18, 10, 41, 0.7);
+    --border-color: rgba(139, 92, 246, 0.25);
+    
+    --neon-pink: #ff007f;
+    --neon-blue: #00ffff;
+    --neon-green: #39ff14;
+    --neon-purple: #8b5cf6;
+    
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --glass-blur: blur(12px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Ambient glow orbs (環境發光球) */
+.ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.12;
+    z-index: -1;
+    pointer-events: none;
+}
+.glow-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--neon-pink);
+    top: -100px;
+    left: -150px;
+}
+.glow-2 {
+    width: 600px;
+    height: 600px;
+    background: var(--neon-blue);
+    bottom: -150px;
+    right: -200px;
+}
+
+/* Game Container (遊戲主容器) */
+.game-container {
+    width: 100%;
+    max-width: 1400px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+}
+
+/* Status Panel (狀態面板) */
+.status-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 20px;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.hero-profile {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.avatar-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-blue);
+    font-size: 1.5rem;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.hero-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.hero-name span {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.75rem;
+    color: var(--neon-pink);
+    margin-left: 0.5rem;
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+.stat-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.stat-label {
+    width: 65px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.bar-outer {
+    width: 140px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bar-inner {
+    height: 100%;
+    border-radius: 50px;
+    transition: width 0.3s ease;
+}
+
+.hp-bar {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    box-shadow: 0 0 8px rgba(255, 75, 43, 0.4);
+}
+
+.exp-bar {
+    background: linear-gradient(to right, #11998e, #38ef7d);
+    box-shadow: 0 0 8px rgba(56, 239, 125, 0.4);
+}
+
+.stat-val {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    width: 55px;
+}
+
+.game-title-logo {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 1.5rem;
+    color: #ffffff;
+    text-shadow: 0 0 10px var(--neon-purple);
+}
+
+.quest-status {
+    text-align: right;
+}
+
+.quest-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.quest-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--neon-blue);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+/* Workspace Layout (工作區佈局) */
+.workspace {
+    display: flex;
+    gap: 1.5rem;
+    flex-grow: 1;
+    min-height: 550px;
+}
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+    overflow: hidden;
+}
+
+.adventure-panel {
+    flex: 1;
+    min-width: 320px;
+}
+
+.magic-panel {
+    flex: 1.2;
+    min-width: 380px;
+}
+
+.panel-header {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.panel-header i {
+    color: var(--neon-pink);
+    font-size: 1.2rem;
+    text-shadow: 0 0 8px var(--neon-pink);
+}
+
+.panel-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* RPG Battle Arena (戰鬥區) */
+.battle-arena {
+    height: 220px;
+    background: linear-gradient(to bottom, #110733, #09041a);
+    margin: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.battle-arena::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.battle-char {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 2;
+    position: relative;
+}
+
+.sprite-box {
+    font-size: 3.5rem;
+    animation: floatChar 3s ease-in-out infinite alternate;
+}
+
+.enemy-char .sprite-box {
+    animation-delay: 0.5s;
+}
+
+@keyframes floatChar {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+.char-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+}
+
+.battle-vs {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.9rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.enemy-hp-bar {
+    width: 80px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.enemy-hp-inner {
+    height: 100%;
+    background: #ff416c;
+    transition: width 0.3s ease;
+}
+
+/* Tutorial Guide Panel (教學引導面板) */
+.guide-panel {
+    margin: 0 1.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.guide-steps-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.step-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--neon-pink);
+    color: #ffffff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+}
+
+.guide-panel h3 {
+    font-size: 1.05rem;
+    color: #ffffff;
+}
+
+.guide-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.guide-tips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--neon-blue);
+    background: rgba(0, 255, 255, 0.05);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+/* Spell Editor Section (編輯器區域) */
+.editor-section {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+}
+
+.editor-header {
+    justify-content: space-between;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.loader-indicator {
+    font-size: 0.8rem;
+    color: var(--neon-blue);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 255, 255, 0.05);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.code-editor-container {
+    flex-grow: 1;
+    display: flex;
+    background: #060310;
+    padding: 1rem;
+    position: relative;
+}
+
+/* Guided Highlight effect (引導高亮閃爍外框) */
+.code-editor-container.highlight-guide {
+    animation: neonBlink 1.5s infinite alternate;
+}
+
+@keyframes neonBlink {
+    0% { box-shadow: inset 0 0 5px var(--border-color); }
+    100% { box-shadow: inset 0 0 15px var(--neon-blue); }
+}
+
+.line-numbers {
+    width: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.15);
+    text-align: right;
+    padding-right: 10px;
+    user-select: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.code-textarea {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    color: var(--neon-green);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    padding-left: 10px;
+    line-height: 1.5;
+}
+
+/* Console Section (主控台區域) */
+.console-section {
+    flex: 1;
+    min-height: 140px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.clear-btn {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.clear-btn:hover {
+    color: var(--neon-pink);
+}
+
+.console-output {
+    flex-grow: 1;
+    background: #03010a;
+    padding: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.system-msg {
+    color: var(--text-secondary);
+}
+
+.print-msg {
+    color: #ffffff;
+}
+
+.error-msg {
+    color: var(--neon-pink);
+    white-space: pre-wrap;
+}
+
+.success-msg {
+    color: var(--neon-green);
+    font-weight: 700;
+}
+
+/* Action Bar (操作按鈕列) */
+.action-bar {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.01);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cast-btn {
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    border: none;
+    color: #ffffff;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+    transition: all 0.2s;
+}
+
+.cast-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5), 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.cast-btn:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Responsive (響應式斷點) */
+@media (max-width: 900px) {
+    .workspace {
+        flex-direction: column;
+    }
+    
+    .status-panel {
+        padding: 1rem;
+        justify-content: center;
+    }
+    
+    .panel {
+        min-height: auto;
+    }
+}
+
+/* Modals & Overlay Style (彈窗樣式) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(8, 4, 23, 0.85);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.game-modal {
+    background: rgba(22, 12, 49, 0.9);
+    border: 2px solid var(--border-color);
+    border-radius: 28px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+    transform: scale(0.85);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.show .game-modal {
+    transform: scale(1);
+}
+
+.modal-header {
+    margin-bottom: 1.5rem;
+}
+
+.modal-header i {
+    font-size: 3.5rem;
+    color: #ffd700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    animation: pulseIcon 2s infinite alternate;
+}
+
+.modal-header.level-up i {
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes pulseIcon {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.modal-header h3 {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-top: 1rem;
+    letter-spacing: 1px;
+}
+
+.modal-body {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+}
+
+.modal-close-btn {
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.8rem 2.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+    transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
+}
+
+/* Floating Damage Number (漂浮傷害數字) */
+.damage-popup {
+    position: absolute;
+    color: var(--neon-pink);
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px #000000, 0 0 12px var(--neon-pink);
+    z-index: 10;
+    animation: floatUpDamage 1s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes floatUpDamage {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(15px, -60px) scale(0.9);
+    }
+}
+
+/* Spell Flash Effects Overlay (魔法閃動特效圖層) */
+.spell-fx-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+.spell-fx-overlay.spell-fire {
+    background: radial-gradient(circle, rgba(255, 0, 127, 0.25) 0%, rgba(0,0,0,0) 70%);
+    opacity: 1;
+    animation: flashFx 0.4s ease-out forwards;
+}
+
+.spell-fx-overlay.spell-ice {
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.25) 0%, rgba(0,0,0,0) 70%);
+    opacity: 1;
+    animation: flashFx 0.4s ease-out forwards;
+}
+
+.spell-fx-overlay.spell-thunder {
+    background: radial-gradient(circle, rgba(255, 255, 0, 0.25) 0%, rgba(0,0,0,0) 70%);
+    opacity: 1;
+    animation: flashFx 0.4s ease-out forwards;
+}
+
+@keyframes flashFx {
+    0% { opacity: 0; }
+    30% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Quest Map Style (關卡地圖樣式) */
+.quest-map {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 20px;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    overflow-x: auto;
+    gap: 0.5rem;
+}
+
+.map-node-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+}
+
+.map-node-wrapper:last-child {
+    flex-grow: 0;
+}
+
+.map-node {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #110733;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    transition: all 0.3s;
+    user-select: none;
+    z-index: 2;
+    position: relative;
+}
+
+.map-node.unlocked {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+}
+
+.map-node.unlocked:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.4);
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.map-node.current {
+    background: var(--neon-blue);
+    border-color: #ffffff;
+    color: #0c0721;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--neon-blue), 0 0 10px #ffffff;
+    animation: pulseCurrentNode 1.5s infinite alternate;
+}
+
+@keyframes pulseCurrentNode {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+.map-node.completed {
+    background: rgba(57, 255, 20, 0.1);
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+}
+
+.map-node.completed:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 18px rgba(57, 255, 20, 0.4);
+}
+
+.map-node.locked {
+    opacity: 0.4;
+}
+
+.map-connector {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    flex-grow: 1;
+    margin: 0 -2px;
+    z-index: 1;
+}
+
+.map-connector.completed {
+    background: linear-gradient(to right, var(--neon-green), var(--neon-blue));
+}
+
+.map-connector.active {
+    background: var(--neon-blue);
+}
+
