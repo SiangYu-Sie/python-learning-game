@@ -451,7 +451,7 @@ const questData = {
         ]
     },
     8: {
-        name: "Lv.8 卷軸收納盒 ｜ List (列表) 基礎操作",
+        name: "Lv.8 卷卷軸收納盒 ｜ List (列表) 基礎操作",
         enemyName: "貪婪史萊姆",
         enemySprite: "🧪",
         enemyMaxHp: 120,
@@ -460,14 +460,14 @@ const questData = {
                 title: "步驟 1/6: 建立你的收納列表",
                 text: "List (列表) 可以存放多項物件。請建立一個名為 <code>inventory</code> (背包) 的列表，包含 <code>'sword'</code>、<code>'shield'</code>、<code>'potion'</code> 三個字串，並將其印出：<br><strong style='color: #ff007f;'>inventory = ['sword', 'shield', 'potion']<br>print(inventory)</strong>",
                 tip: "Python 的列表使用中括號 []，裡面的元素用逗號隔開。",
-                placeholder: "# 建立包含三個字串 the 列表並印出",
+                placeholder: "# 建立包含三個字串的列表並印出",
                 validate: (code, output) => {
                     return code.includes("[") && code.includes("]") && output.includes("sword") && output.includes("potion");
                 }
             },
             {
-                title: "步驟 2/6: 抽取你的主要武器",
-                text: "請輸出 <code>inventory</code> 背包列表中的第一個元素（索引值為 0 的元素）來擊碎史萊姆的核心：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>print(inventory[0])</strong>",
+                title: "步驟 2/6: 讀取首項元素",
+                text: "請輸出 <code>inventory</code> 列表中第一個元素（索引值為 0 的元素）來擊碎史萊姆的核心：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>print(inventory[0])</strong>",
                 tip: "列表的索引從 0 開始，第一個元素是 [0]，第二個是 [1]。",
                 placeholder: "# 輸出列表的第一個元素 [0]",
                 validate: (code, output) => {
@@ -493,8 +493,8 @@ const questData = {
                 }
             },
             {
-                title: "步驟 5/6: 丟棄笨重盾牌",
-                text: "背包過重！請使用 <code>.remove('shield')</code> 移除列表中的盾牌，最後印出 <code>inventory</code> 列表：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>inventory.remove('shield')<br>print(inventory)</strong>",
+                title: "步驟 5/6: 丟棄並彈出盾牌",
+                text: "盾牌壞了！請使用 <code>.remove('shield')</code> 移除列表中的盾牌，最後印出 <code>inventory</code> 列表：<br><strong style='color: #00ffff;'>inventory = ['sword', 'shield', 'potion']<br>inventory.remove('shield')<br>print(inventory)</strong>",
                 tip: "list.remove(value) 會尋找列表中的第一個指定內容並刪除它。",
                 placeholder: "# 使用 remove 移除 shield 並印出列表",
                 validate: (code, output) => {
@@ -502,12 +502,12 @@ const questData = {
                 }
             },
             {
-                title: "步驟 6/6: 實戰挑戰：更新裝備武器",
-                text: "請把背包中第二個道具（索引為 1 的盾牌）覆寫修改成 <code>'greatsword'</code> 並印出列表：<br><strong style='color: #39ff14;'>inventory = ['sword', 'shield', 'potion']<br>inventory[1] = 'greatsword'<br>print(inventory)</strong>",
-                tip: "列表的特定元素可以直接用 list[index] = new_value 來修改。",
-                placeholder: "# 修改列表索引為 1 的元素並印出",
+                title: "步驟 6/6: 【困難挑戰】背包綜合整理與拼接",
+                text: "背包整理！宣告 <code>inventory = ['sword', 'potion', 'scroll']</code>。請使用 <code>.append('shield')</code> 加入防具，接著將索引 1 的藥水覆寫為 <code>'elixir'</code>，最後印出<strong>列表長度加上列表中最後一個物件名（字串拼接）</strong>：<br><strong style='color: #39ff14;'>inventory = ['sword', 'potion', 'scroll']<br>inventory.append('shield')<br>inventory[1] = 'elixir'<br>print(str(len(inventory)) + ' ' + inventory[-1])</strong>",
+                tip: "提示：[-1] 是 Python 列表中讀取最後一項的簡便語法！因為長度是 4 且最後一項被 append 為 'shield'，應輸出 '4 shield'！",
+                placeholder: "# 實作 append、修改、len 長度與 [-1] 讀取拼接輸出",
                 validate: (code, output) => {
-                    return code.includes("[1]") && output.includes("greatsword") && !output.includes("shield");
+                    return code.includes("append") && code.includes("[-1]") && code.includes("len") && output.trim() === "4 shield";
                 }
             }
         ]
@@ -516,7 +516,7 @@ const questData = {
         name: "Lv.9 終極契約 ｜ 自訂 Function (函式) 定義",
         enemyName: "雙頭奇美拉",
         enemySprite: "🦁",
-        enemyMaxHp: 150,
+        enemyMaxHp: 180,
         steps: [
             {
                 title: "步驟 1/5: 定義第一個魔法招式",
@@ -546,21 +546,21 @@ const questData = {
                 }
             },
             {
-                title: "步驟 4/5: 帶有數值計算的招式",
-                text: "定義一個 <code>double_dmg(dmg)</code> 函式，功能為輸出 <code>dmg * 2</code> 的乘積結果。傳入 <code>30</code> 呼叫它：<br><strong style='color: #ff007f;'>def double_dmg(dmg):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(dmg * 2)<br><br>double_dmg(30)</strong>",
-                tip: "函式內可以直接使用算術運算，並用 print 印出計算結果。",
-                placeholder: "# 定義 double_dmg 並傳入 30 呼叫",
+                title: "步驟 4/5: 帶有複合運算與防禦扣減的招式",
+                text: "奇美拉開啟了甲殼防禦！請定義一個 <code>melee_atk(base, armor)</code> 函式，功能為計算 <code>(base - armor) * 2</code> 的最終物理傷害並將其印出。傳入基礎傷害 <code>80</code> 與怪物理性護甲 <code>20</code> 進行呼叫：<br><strong style='color: #ff007f;'>def melee_atk(base, armor):<br>&nbsp;&nbsp;&nbsp;&nbsp;print((base - armor) * 2)<br><br>melee_atk(80, 20)</strong>",
+                tip: "在函式內部可以直接對參數進行多重算術運算，此處 80 減 20 乘 2 應印出 120。",
+                placeholder: "# 定義 melee_atk 雙參數函式並呼叫",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("double_dmg") && output.trim() === "60";
+                    return code.includes("def") && code.includes("melee_atk") && output.trim() === "120";
                 }
             },
             {
-                title: "步驟 5/5: 實戰挑戰：自訂問候語招式",
-                text: "定義一個 <code>greet_hero(name)</code> 函式，印出 <code>'Hello ' + name</code>。傳入 <code>'Bison'</code> 呼叫它：<br><strong style='color: #39ff14;'>def greet_hero(name):<br>&nbsp;&nbsp;&nbsp;&nbsp;print('Hello ' + name)<br><br>greet_hero('Bison')</strong>",
-                tip: "這是最基礎的字串傳入與輸出示範，記得 Hello 後面有空格。",
-                placeholder: "# 定義 greet_hero 並傳入 Bison 呼叫",
+                title: "步驟 5/5: 【困難挑戰】自訂條件判定技能",
+                text: "奇美拉準備釋放毀滅龍捲！請定義一個名為 <code>check_cast(mp, cost)</code> 的函式：如果 <code>mp</code> 大於等於 <code>cost</code>，印出 <code>'Cast spell!'</code>，否則 (else) 印出 <code>'No mana!'</code>。傳入法力 <code>40</code> 與消耗量 <code>50</code> 呼叫該函式：<br><strong style='color: #39ff14;'>def check_cast(mp, cost):<br>&nbsp;&nbsp;&nbsp;&nbsp;if mp >= cost:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('Cast spell!')<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print('No mana!')<br><br>check_cast(40, 50)</strong>",
+                tip: "這是在自訂 Function 內嵌入 if-else 的經典組合！因為 40 小於 50，此處應輸出 'No mana!'！",
+                placeholder: "# 在 def 內部撰寫 if-else 並傳入參數呼叫",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("greet_hero") && output.trim() === "Hello Bison";
+                    return code.includes("def") && code.includes("if") && code.includes("check_cast") && output.trim() === "No mana!";
                 }
             }
         ]
@@ -599,26 +599,26 @@ const questData = {
                 }
             },
             {
-                title: "步驟 4/5: 計算爆擊乘積 Return",
-                text: "定義 <code>calc_crit(atk, mult)</code> 函式，傳回 <code>atk * mult</code> 的結果。印出傳入 <code>50</code> 與 <code>3</code> 呼叫它的傳回值：<br><strong style='color: #ff007f;'>def calc_crit(atk, mult):<br>&nbsp;&nbsp;&nbsp;&nbsp;return atk * mult<br><br>print(calc_crit(50, 3))</strong>",
-                tip: "多參數的計算也可以直接 return 傳回。",
-                placeholder: "# 定義計算爆擊 return 函式並印出結果",
+                title: "步驟 4/5: 爆擊與護盾削弱傷害 Return",
+                text: "魔王放出了黑暗障壁！請定義 <code>get_magic_dmg(atk, mult, shield)</code> 函式，使用 <code>return</code> 返回 <code>atk * mult - shield</code> 的計算結果。用 print 印出傳入攻擊 <code>50</code>、爆擊倍率 <code>3</code>、盾牌防禦 <code>30</code> 的呼叫傳回值：<br><strong style='color: #ff007f;'>def get_magic_dmg(atk, mult, shield):<br>&nbsp;&nbsp;&nbsp;&nbsp;return atk * mult - shield<br><br>print(get_magic_dmg(50, 3, 30))</strong>",
+                tip: "在 return 中可以使用多重參數的加減乘除公式，此處計算 50 * 3 - 30 應輸出 120。",
+                placeholder: "# 定義含公式 return 的三參函式並印出結果",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("return") && output.trim() === "150";
+                    return code.includes("def") && code.includes("return") && output.trim() === "120";
                 }
             },
             {
-                title: "步驟 5/5: 實戰挑戰：終極死亡判定",
-                text: "魔王最後一擊！定義 <code>is_dead(hp)</code> 函式，如果 <code>hp <= 0</code> 傳回 <code>True</code>，否則傳回 <code>False</code>。印出傳入 <code>10</code> 呼叫結果：<br><strong style='color: #39ff14;'>def is_dead(hp):<br>&nbsp;&nbsp;&nbsp;&nbsp;if hp <= 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br><br>print(is_dead(10))</strong>",
-                tip: "10 不小於或等於 0，所以此處呼叫應傳回 False！",
-                placeholder: "# 實作 boolean return 的死亡判定並輸出",
+                title: "步驟 5/5: 【終極困難挑戰】血量與護盾綜合死亡判定",
+                text: "深淵魔王孤注一擲！請定義死亡判定函式 <code>is_defeated(hp, shield)</code>：如果 <code>hp + shield</code> 小於等於 0 (<code><= 0</code>)，回傳布林值 <code>True</code>，否則回傳 <code>False</code>。用 <code>print()</code> 印出傳入 HP 為 <code>10</code> 與護盾為 <code>-20</code> 的呼叫結果：<br><strong style='color: #39ff14;'>def is_defeated(hp, shield):<br>&nbsp;&nbsp;&nbsp;&nbsp;if hp + shield <= 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br><br>print(is_defeated(10, -20))</strong>",
+                tip: "這是一個將變數相加與比較判斷完全整合的 return 函式！10 + (-20) 等於 -10 <= 0，所以應印出 True！畢松勇者，給魔王最後一擊吧！",
+                placeholder: "# 實作綜合 death/shield 判定的 Boolean return 函式並印出結果",
                 validate: (code, output) => {
-                    return code.includes("def") && code.includes("return") && output.trim() === "False";
+                    return code.includes("def") && code.includes("return") && output.trim() === "True";
                 }
             }
         ]
     }
-}
+};
 
 // 3. Pyodide 執行環境初始化 (Pyodide Initialization)
 let pyodideInstance = null;
@@ -861,13 +861,14 @@ function renderQuestMap() {
             node.classList.remove("locked");
             node.classList.add("unlocked");
             node.addEventListener("click", () => {
-                if (gameState.currentQuest !== i) {
-                    gameState.currentQuest = i;
-                    gameState.currentStep = 1;
-                    saveGame();
-                    loadQuest(i);
-                    appendSystemMessage(`【傳送】已傳送至關卡 Lv.${i} 重複挑戰！`);
-                }
+                gameState.currentQuest = i;
+                gameState.currentStep = 1;
+                saveGame();
+                loadQuest(i);
+                // 切換為遊戲挑戰視窗 (SPA)
+                document.getElementById("mapView").classList.remove("active");
+                document.getElementById("gameView").classList.add("active");
+                appendSystemMessage(`【傳送】已進入關卡 Lv.${i} 挑戰！`);
             });
         }
         wrapper.appendChild(node);
@@ -1014,6 +1015,13 @@ document.getElementById("castSpellBtn").addEventListener("click", castSpell);
 document.getElementById("clearConsoleBtn").addEventListener("click", clearConsole);
 document.getElementById("helpBtn").addEventListener("click", startTutorial);
 
+// 返回地圖按鈕事件
+document.getElementById("mapBackBtn").addEventListener("click", () => {
+    renderQuestMap();
+    document.getElementById("gameView").classList.remove("active");
+    document.getElementById("mapView").classList.add("active");
+});
+
 document.getElementById("modalCloseBtn").addEventListener("click", () => {
     if (tutorialActive) {
         currentTutorialStep++;
@@ -1031,6 +1039,13 @@ document.getElementById("modalCloseBtn").addEventListener("click", () => {
         }
     } else {
         document.getElementById("modalOverlay").classList.remove("show");
+        // 如果目前關卡完成了（怪物血量為 0 且步驟完成了），關閉彈窗後自動返回地圖
+        const quest = questData[gameState.currentQuest];
+        if (gameState.enemyHp <= 0 && gameState.currentStep >= quest.steps.length) {
+            renderQuestMap();
+            document.getElementById("gameView").classList.remove("active");
+            document.getElementById("mapView").classList.add("active");
+        }
     }
 });
 

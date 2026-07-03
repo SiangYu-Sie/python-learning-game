@@ -19,130 +19,164 @@
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
-    <div class="game-container">
-        <!-- Top Navigation / Status Panel (狀態面板) -->
-        <header class="status-panel" id="statusPanel">
-            <div class="hero-profile">
-                <div class="avatar-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div class="hero-stats">
-                    <div class="hero-name">畢松勇者 <span id="heroLevel">Lv.1</span></div>
-                    <div class="stat-bar-container">
-                        <div class="stat-label">HP (生命值)</div>
-                        <div class="bar-outer">
-                            <div class="bar-inner hp-bar" id="hpBar" style="width: 100%;"></div>
-                        </div>
-                        <span class="stat-val" id="hpValue">100 / 100</span>
-                    </div>
-                    <div class="stat-bar-container">
-                        <div class="stat-label">EXP (經驗值)</div>
-                        <div class="bar-outer">
-                            <div class="bar-inner exp-bar" id="expBar" style="width: 0%;"></div>
-                        </div>
-                        <span class="stat-val" id="expValue">0 / 100</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="game-title-logo">
-                <span class="logo-text">PyQuest</span>
-            </div>
-
-            <div class="quest-status">
-                <div class="quest-label">當前關卡</div>
-                <div class="quest-name" id="currentQuestName">載入中...</div>
-                <button class="help-btn" id="helpBtn" title="顯示新手教學"><i class="fa-solid fa-circle-question"></i> 遊戲說明</button>
-            </div>
-        </header>
-
-        <!-- Quest Map Panel (關卡傳送地圖) -->
-        <div class="quest-map" id="questMap"></div>
-
-        <!-- Main Workspace (工作區) -->
-        <main class="workspace">
-            <!-- Left Panel: Adventure & Guidance (冒險與引導) -->
-            <section class="panel adventure-panel" id="adventurePanel">
-                <div class="panel-header">
-                    <i class="fa-solid fa-dragon"></i>
-                    <h2>冒險視窗</h2>
+    <!-- 1. 關卡地圖選擇視窗 (Map View) -->
+    <div class="view-container active" id="mapView">
+        <div class="map-view-content">
+            <header class="map-header">
+                <div class="logo-area">
+                    <h1 class="game-title-logo">PyQuest</h1>
+                    <p class="game-subtitle">畢松勇者傳說 ｜ Python 魔法修煉地圖</p>
                 </div>
                 
-                <!-- RPG Battle Area (戰鬥區域) -->
-                <div class="battle-arena">
-                    <div class="battle-char player-char">
-                        <div class="sprite-box">🧙‍♂️</div>
-                        <div class="char-label">你</div>
+                <div class="map-hero-profile">
+                    <div class="avatar-box">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <div class="battle-vs">VS</div>
-                    <div class="battle-char enemy-char" id="enemyContainer">
-                        <div class="sprite-box" id="enemySprite">👾</div>
-                        <div class="char-label" id="enemyName">載入中...</div>
-                        <div class="enemy-hp-bar">
-                            <div class="enemy-hp-inner" id="enemyHpBar" style="width: 100%;"></div>
+                    <div class="hero-stats">
+                        <div class="hero-name">畢松勇者 <span id="mapHeroLevel">Lv.1</span></div>
+                        <div class="stat-bar-container">
+                            <div class="stat-label">EXP (經驗值)</div>
+                            <div class="bar-outer">
+                                <div class="bar-inner exp-bar" id="mapExpBar" style="width: 0%;"></div>
+                            </div>
+                            <span class="stat-val" id="mapExpValue">0 / 100</span>
                         </div>
                     </div>
                 </div>
+            </header>
 
-                <!-- Guided Tutorial Panel (引導教學面板) -->
-                <div class="guide-panel" id="guidePanel">
-                    <div class="guide-steps-header">
-                        <span class="step-badge" id="stepBadge">步驟 1/3</span>
-                        <h3 id="stepTitle">引導加載中...</h3>
+            <main class="map-main">
+                <h2 class="map-title"><i class="fa-solid fa-map-marked-alt"></i> 選擇修煉關卡挑戰</h2>
+                <!-- 關卡地圖傳送點容器 -->
+                <div class="full-quest-map" id="questMap"></div>
+            </main>
+            
+            <footer class="map-footer">
+                <button class="map-help-btn" id="helpBtn"><i class="fa-solid fa-circle-question"></i> 遊戲說明</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 2. 滿版對決與寫程式視窗 (Game View) -->
+    <div class="view-container" id="gameView">
+        <div class="game-container">
+            <!-- Top Navigation / Status Panel (狀態面板) -->
+            <header class="status-panel" id="statusPanel">
+                <div class="hero-profile">
+                    <div class="avatar-box">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <p class="guide-text" id="guideText">系統正在初始化，請稍候...</p>
-                    
-                    <div class="guide-tips">
-                        <i class="fa-solid fa-lightbulb"></i>
-                        <span id="guideTipText">載入 Pyodide 中，這可能需要幾秒鐘時間。</span>
+                    <div class="hero-stats">
+                        <div class="hero-name">畢松勇者 <span id="heroLevel">Lv.1</span></div>
+                        <div class="stat-bar-container">
+                            <div class="stat-label">HP (生命值)</div>
+                            <div class="bar-outer">
+                                <div class="bar-inner hp-bar" id="hpBar" style="width: 100%;"></div>
+                            </div>
+                            <span class="stat-val" id="hpValue">100 / 100</span>
+                        </div>
+                        <div class="stat-bar-container">
+                            <div class="stat-label">EXP (經驗值)</div>
+                            <div class="bar-outer">
+                                <div class="bar-inner exp-bar" id="expBar" style="width: 0%;"></div>
+                            </div>
+                            <span class="stat-val" id="expValue">0 / 100</span>
+                        </div>
                     </div>
                 </div>
-            </section>
-
-            <!-- Right Panel: Code Spell Editor & Console (編輯器與主控台) -->
-            <section class="panel magic-panel" id="magicPanel">
-                <!-- Code Editor Area (程式碼編輯器區域) -->
-                <div class="editor-section">
-                    <div class="panel-header editor-header">
-                        <div class="header-left">
-                            <i class="fa-solid fa-code"></i>
-                            <h2>魔法咒語編輯器</h2>
-                        </div>
-                        <div class="loader-indicator" id="pyodideLoader">
-                            <i class="fa-solid fa-circle-notch fa-spin"></i> Pyodide (執行環境) 載入中...
-                        </div>
-                    </div>
-                    
-                    <div class="code-editor-container" id="editorContainer">
-                        <div class="line-numbers" id="lineNumbers">
-                            <div>1</div>
-                        </div>
-                        <textarea class="code-textarea" id="codeTextarea" spellcheck="false" placeholder="# 在這裡編寫你的 Python 魔法咒語..."></textarea>
-                    </div>
-
-                    <!-- Action Button (動作按鈕移至編輯器正下方) -->
-                    <div class="action-bar">
-                        <button class="cast-btn" id="castSpellBtn" disabled>
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> 詠唱魔法 (Cast Spell)
-                        </button>
-                    </div>
+                
+                <div class="quest-status">
+                    <div class="quest-label">當前挑戰關卡</div>
+                    <div class="quest-name" id="currentQuestName">載入中...</div>
                 </div>
 
-                <!-- Console Output Area (主控台輸出區域) -->
-                <div class="console-section">
-                    <div class="panel-header">
-                        <i class="fa-solid fa-terminal"></i>
-                        <h2>水晶球主控台</h2>
-                        <button class="clear-btn" id="clearConsoleBtn" title="清除輸出">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="console-output" id="consoleOutput">
-                        <div class="system-msg">系統初始化中...</div>
-                    </div>
+                <div class="nav-actions">
+                    <button class="map-back-btn" id="mapBackBtn">
+                        <i class="fa-solid fa-map"></i> 返回地圖
+                    </button>
                 </div>
-            </section>
-        </main>
+            </header>
+
+            <!-- Main Workspace (滿版工作區) -->
+            <main class="workspace">
+                <!-- Left Panel: Adventure & Guidance (對決移到最頂部，引導放大) -->
+                <section class="panel adventure-panel" id="adventurePanel">
+                    <!-- RPG Battle Area (戰鬥區域移到最頂層) -->
+                    <div class="battle-arena">
+                        <div class="battle-char player-char">
+                            <div class="sprite-box">🧙‍♂️</div>
+                            <div class="char-label">你</div>
+                        </div>
+                        <div class="battle-vs">VS</div>
+                        <div class="battle-char enemy-char" id="enemyContainer">
+                            <div class="sprite-box" id="enemySprite">👾</div>
+                            <div class="char-label" id="enemyName">載入中...</div>
+                            <div class="enemy-hp-bar">
+                                <div class="enemy-hp-inner" id="enemyHpBar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guided Tutorial Panel (放大版引導教學) -->
+                    <div class="guide-panel" id="guidePanel">
+                        <div class="guide-steps-header">
+                            <span class="step-badge" id="stepBadge">步驟 1/3</span>
+                            <h3 id="stepTitle">引導加載中...</h3>
+                        </div>
+                        <p class="guide-text" id="guideText">系統正在初始化，請稍候...</p>
+                        
+                        <div class="guide-tips">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span id="guideTipText">載入 Pyodide 中，這可能需要幾秒鐘時間。</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Panel: Code Spell Editor & Console (編輯器與主控台) -->
+                <section class="panel magic-panel" id="magicPanel">
+                    <!-- Code Editor Area (程式碼編輯器區域) -->
+                    <div class="editor-section">
+                        <div class="panel-header editor-header">
+                            <div class="header-left">
+                                <i class="fa-solid fa-code"></i>
+                                <h2>魔法咒語編輯器</h2>
+                            </div>
+                            <div class="loader-indicator" id="pyodideLoader">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> Pyodide (執行環境) 載入中...
+                            </div>
+                        </div>
+                        
+                        <div class="code-editor-container" id="editorContainer">
+                            <div class="line-numbers" id="lineNumbers">
+                                <div>1</div>
+                            </div>
+                            <textarea class="code-textarea" id="codeTextarea" spellcheck="false" placeholder="# 在這裡編寫你的 Python 魔法咒語..."></textarea>
+                        </div>
+
+                        <!-- Action Button (動作按鈕移至編輯器正下方) -->
+                        <div class="action-bar">
+                            <button class="cast-btn" id="castSpellBtn" disabled>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 詠唱魔法 (Cast Spell)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Console Output Area (主控台輸出區域) -->
+                    <div class="console-section">
+                        <div class="panel-header">
+                            <i class="fa-solid fa-terminal"></i>
+                            <h2>水晶球主控台</h2>
+                            <button class="clear-btn" id="clearConsoleBtn" title="清除輸出">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <div class="console-output" id="consoleOutput">
+                            <div class="system-msg">系統初始化中...</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
 
     <!-- Achievements & Level Up Modals (成就與升級彈窗) -->
