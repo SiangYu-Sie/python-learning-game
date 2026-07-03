@@ -822,7 +822,8 @@ body {
     font-weight: 700;
     cursor: pointer;
     margin-top: 0.35rem;
-    display: flex;
+    display: inline-flex;
+    margin-left: auto;
     align-items: center;
     gap: 0.3rem;
     transition: all 0.2s;
