@@ -723,6 +723,7 @@ function loadStep() {
     const textarea = document.getElementById("codeTextarea");
     textarea.value = "";
     textarea.placeholder = step.placeholder !== undefined ? step.placeholder : "# 在這裡編寫你的 Python 魔法咒語...";
+    updateLineNumbers();
 }
 
 function updateEnemyHpBar() {
@@ -1048,3 +1049,25 @@ window.addEventListener("DOMContentLoaded", () => {
         }, 1500);
     }
 });
+
+// 7. 魔法編輯器行號更新與滾動同步
+const textareaElement = document.getElementById("codeTextarea");
+const lineNumbersElement = document.getElementById("lineNumbers");
+
+if (textareaElement && lineNumbersElement) {
+    textareaElement.addEventListener("input", updateLineNumbers);
+    textareaElement.addEventListener("scroll", () => {
+        lineNumbersElement.scrollTop = textareaElement.scrollTop;
+    });
+}
+
+function updateLineNumbers() {
+    const textarea = document.getElementById("codeTextarea");
+    const lineNumbers = document.getElementById("lineNumbers");
+    if (!textarea || !lineNumbers) return;
+    const lines = textarea.value.split("\n").length;
+    lineNumbers.innerHTML = Array(lines)
+        .fill(0)
+        .map((_, i) => `<div>${i + 1}</div>`)
+        .join("");
+}

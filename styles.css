@@ -403,7 +403,7 @@ body {
 }
 
 .code-editor-container {
-    flex-grow: 1;
+    height: 240px; /* 固定高度，防止被代碼撐長 */
     display: flex;
     background: #060310;
     padding: 1rem;
@@ -429,10 +429,13 @@ body {
     padding-right: 10px;
     user-select: none;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden; /* 由 JS 同步滾動，隱藏滾動條 */
+    height: 100%;
 }
 
 .code-textarea {
     flex-grow: 1;
+    height: 100%; /* 填滿容器 */
     background: transparent;
     border: none;
     outline: none;
@@ -442,6 +445,9 @@ body {
     font-size: 0.95rem;
     padding-left: 10px;
     line-height: 1.5;
+    overflow-y: auto; /* 垂直滾動條 */
+    overflow-x: auto; /* 水平滾動條 */
+    white-space: pre; /* 關閉自動折行，確保行號一對一對齊 */
 }
 
 /* Console Section (主控台區域) */
