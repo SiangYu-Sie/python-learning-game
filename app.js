@@ -556,6 +556,11 @@ function showModal(title, body, iconClass = "fa-trophy", isLevelUp = false, btnT
     const icon = document.getElementById("modalIcon");
     const mHeader = document.querySelector(".modal-header");
     const closeBtn = document.getElementById("modalCloseBtn");
+    
+    if (!tutorialActive) {
+        overlay.classList.remove("tutorial-mode");
+    }
+    
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalBody").innerHTML = body;
     icon.className = `fa-solid ${iconClass}`;
@@ -591,6 +596,7 @@ function showTutorialStep() {
             target.scrollIntoView({ behavior: "smooth", block: "center" });
         }
     }
+    document.getElementById("modalOverlay").classList.add("tutorial-mode");
     showModal(step.title, step.body, step.iconClass, false, step.btnText);
 }
 
