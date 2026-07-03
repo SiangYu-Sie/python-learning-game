@@ -463,62 +463,41 @@ function clearConsole() {
     document.getElementById("consoleOutput").innerHTML = "";
 }
 
-// 載入關卡數據 (Load Quest Data)
 function loadQuest(questId) {
     const quest = questData[questId];
     if (!quest) return;
-    
-    // 更新頂部與標籤
     document.getElementById("currentQuestName").innerText = quest.name;
     document.getElementById("enemyName").innerText = quest.enemyName;
     document.getElementById("enemySprite").innerText = quest.enemySprite;
-    
-    // 重設怪物 HP
     gameState.enemyHp = quest.enemyMaxHp;
     gameState.enemyMaxHp = quest.enemyMaxHp;
     updateEnemyHpBar();
-    
-    // 載入當前步驟
     loadStep();
-    
-    // 更新地圖節點高亮
     renderQuestMap();
 }
 
-// 載入步驟數據 (Load Step Data)
 function loadStep() {
     const quest = questData[gameState.currentQuest];
     const step = quest.steps ? quest.steps[gameState.currentStep - 1] : null;
-    
     if (!step) {
-        // 如果沒有步驟，說明該關卡還未實作 (2-10 關卡)
         document.getElementById("stepBadge").innerText = "開發中";
         document.getElementById("stepTitle").innerText = "敬請期待";
         document.getElementById("guideText").innerHTML = "下一等級的教學與魔物正在趕來的路上！";
         document.getElementById("guideTipText").innerText = "先重複練習前面的代碼吧。";
         return;
     }
-    
     document.getElementById("stepBadge").innerText = `步驟 ${gameState.currentStep}/${quest.steps.length}`;
     document.getElementById("stepTitle").innerText = step.title;
     document.getElementById("guideText").innerHTML = step.text;
     document.getElementById("guideTipText").innerText = step.tip;
-    
-    // 引導高亮動效 (Guided Highlights)
     const editorContainer = document.getElementById("editorContainer");
     editorContainer.classList.add("highlight-guide");
     setTimeout(() => {
         editorContainer.classList.remove("highlight-guide");
     }, 3000);
-    
-    // 清空編輯器讓使用者手動輸入，並設定引導 placeholder 提示
     const textarea = document.getElementById("codeTextarea");
     textarea.value = "";
-    if (step.placeholder !== undefined) {
-        textarea.placeholder = step.placeholder;
-    } else {
-        textarea.placeholder = "# 在這裡編寫你的 Python 魔法咒語...";
-    }
+    textarea.placeholder = step.placeholder !== undefined ? step.placeholder : "# 在這裡編寫你的 Python 魔法咒語...";
 }
 
 function updateEnemyHpBar() {
@@ -530,98 +509,91 @@ function updatePlayerStats() {
     document.getElementById("heroLevel").innerText = `Lv.${gameState.level}`;
     document.getElementById("hpBar").style.width = `${gameState.hp}%`;
     document.getElementById("hpValue").innerText = `${gameState.hp} / 100`;
-    
     const expPercent = (gameState.exp / gameState.maxExp) * 100;
     document.getElementById("expBar").style.width = `${expPercent}%`;
     document.getElementById("expValue").innerText = `${gameState.exp} / ${gameState.maxExp}`;
 }
 
-// 5. 詠唱魔法執行 (Cast Spell Execution)
 async function castSpell() {
     if (!pyodideInstance) return;
-    
     const code = document.getElementById("codeTextarea").value;
-    stdoutBuffer = ""; // 重設緩衝區
-    
+    stdoutBuffer = "";
     appendSystemMessage("【魔法詠唱中...】");
-    
     try {
-        // 在 Pyodide 前端沙盒執行 Python 代碼
         await pyodideInstance.runPythonAsync(code);
-        
-        // 輸出 print 的內容
-        if (stdoutBuffer) {
-            appendPrintMessage(stdoutBuffer.trim());
-        } else {
-            appendSystemMessage("（魔法無聲生效，無終端輸出）");
-        }
-        
-        // 驗證代碼是否正確 (Verification)
+        if (stdoutBuffer) appendPrintMessage(stdoutBuffer.trim());
+        else appendSystemMessage("（魔法無聲生效，無終端輸出）");
         verifyCode(code, stdoutBuffer);
-        
     } catch (err) {
-        // 捕獲 Python 的 Traceback 錯誤
         appendErrorMessage(err.toString());
     }
 }
 
-// 傷害數字彈窗 (Damage Text Popup)
 function showDamagePopup(amount) {
     const arena = document.querySelector(".battle-arena");
     const popup = document.createElement("div");
     popup.className = "damage-popup";
     popup.innerText = `-${Math.round(amount)} HP`;
-    
-    // 定位在怪物 sprite 附近
     const rightOffset = 80 + Math.random() * 40;
     const topOffset = 70 + Math.random() * 30;
     popup.style.right = `${rightOffset}px`;
     popup.style.top = `${topOffset}px`;
-    
     arena.appendChild(popup);
-    
-    setTimeout(() => {
-        popup.remove();
-    }, 1000);
+    setTimeout(() => { popup.remove(); }, 1000);
 }
 
-// 魔法視覺特效 (Spell Flash Visual FX)
 function playSpellFx(questId) {
     const fx = document.getElementById("spellFxOverlay");
     let type = "fire";
-    
-    if (questId >= 9) {
-        type = "ice";
-    } else if (questId >= 4 && questId <= 6) {
-        type = "thunder";
-    }
-    
+    if (questId >= 9) type = "ice";
+    else if (questId >= 4 && questId <= 6) type = "thunder";
     fx.className = `spell-fx-overlay spell-${type}`;
-    setTimeout(() => {
-        fx.className = "spell-fx-overlay";
-    }, 400);
+    setTimeout(() => { fx.className = "spell-fx-overlay"; }, 400);
 }
 
-// 滿版成就/升級彈窗 (Achievements / Level-up Modals)
-function showModal(title, body, iconClass = "fa-trophy", isLevelUp = false) {
+function showModal(title, body, iconClass = "fa-trophy", isLevelUp = false, btnText = "繼續冒險") {
     const overlay = document.getElementById("modalOverlay");
     const icon = document.getElementById("modalIcon");
     const mHeader = document.querySelector(".modal-header");
-    
+    const closeBtn = document.getElementById("modalCloseBtn");
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalBody").innerHTML = body;
     icon.className = `fa-solid ${iconClass}`;
-    
-    if (isLevelUp) {
-        mHeader.classList.add("level-up");
-    } else {
-        mHeader.classList.remove("level-up");
-    }
-    
+    closeBtn.innerText = btnText;
+    if (isLevelUp) mHeader.classList.add("level-up");
+    else mHeader.classList.remove("level-up");
     overlay.classList.add("show");
 }
 
-// Local Storage 存檔/讀檔 (Local Storage Save/Load)
+let tutorialActive = false;
+let currentTutorialStep = 0;
+const tutorialSteps = [
+    { title: "🧙‍♂️ 歡迎來到 PyQuest 魔法世界！", body: "這是一個邊學邊玩的 Python 程式挑戰遊戲。<br>接下來我們將用 1 分鐘的導覽引導你認識各個區域，幫助你輕鬆上手！", targetId: null, btnText: "開始導覽 (1/5)", iconClass: "fa-wand-magic-sparkles" },
+    { title: "🗺️ 關卡傳送地圖 (Quest Map)", body: "這裡是你的**冒險傳送地圖**。顯示 1-10 關的解鎖進度，過關後可以隨時點擊數字傳送、重複練習！", targetId: "questMap", btnText: "下一步 (2/5)", iconClass: "fa-map" },
+    { title: "📋 任務引導面板 (Quest Book)", body: "這裡會顯示當前關卡的魔物、<b>步驟說明</b>與<b>技巧提示 (Tips)</b>。請仔細閱讀目標後再動手寫代碼！", targetId: "adventurePanel", btnText: "下一步 (3/5)", iconClass: "fa-book-open" },
+    { title: "🔮 魔法編輯器 (Spell Editor)", body: "這是編寫程式碼的區域。為防止偷懶，系統不會預填答案，請看清左側提示<b>親自動手輸入</b>！", targetId: "editorContainer", btnText: "下一步 (4/5)", iconClass: "fa-keyboard" },
+    { title: "⚡ 詠唱魔法與水晶球", body: "完成代碼後，點擊右下角<b>詠唱魔法 (Cast Spell)</b>。執行結果與可能出錯的紅色錯誤將在主控台呈現！", targetId: "magicPanel", btnText: "完成導覽，開始冒險！", iconClass: "fa-terminal" }
+];
+
+function startTutorial() {
+    tutorialActive = true;
+    currentTutorialStep = 0;
+    showTutorialStep();
+}
+
+function showTutorialStep() {
+    document.querySelectorAll(".tutorial-highlight").forEach(el => el.classList.remove("tutorial-highlight"));
+    const step = tutorialSteps[currentTutorialStep];
+    if (step.targetId) {
+        const target = document.getElementById(step.targetId);
+        if (target) {
+            target.classList.add("tutorial-highlight");
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+    showModal(step.title, step.body, step.iconClass, false, step.btnText);
+}
+
 function saveGame() {
     localStorage.setItem("pyquest_save_v2", JSON.stringify(gameState));
 }
@@ -632,41 +604,26 @@ function loadGame() {
         try {
             const parsed = JSON.parse(saved);
             Object.assign(gameState, parsed);
-            if (!gameState.unlockedQuests) {
-                gameState.unlockedQuests = [1];
-            }
-            appendSystemMessage("\u3010\u9032\u5EA6\u52A0\u8F09\u3011\u6210\u529F\u8F09\u5165\u4F60\u4E0A\u6B21\u5192\u96AA\u7684\u5B58\u6A94\uFF01");
-        } catch (e) {
-            console.error("Failed to parse game save", e);
-        }
+            if (!gameState.unlockedQuests) gameState.unlockedQuests = [1];
+            appendSystemMessage("【進度加載】成功載入你上次冒險的存檔！");
+        } catch (e) { console.error("Failed to parse game save", e); }
     }
 }
 
-// Quest Map Rendering (渲染傳送地圖)
 function renderQuestMap() {
     const map = document.getElementById("questMap");
     if (!map) return;
     map.innerHTML = "";
     const totalQuests = 10;
-    
     for (let i = 1; i <= totalQuests; i++) {
         const wrapper = document.createElement("div");
         wrapper.className = "map-node-wrapper";
-        
         const node = document.createElement("div");
         node.className = "map-node";
         node.innerText = i;
-        
-        // 判定關卡節點狀態
-        if (i === gameState.currentQuest) {
-            node.classList.add("current");
-        } else if (gameState.unlockedQuests.includes(i)) {
-            node.classList.add("completed");
-        } else {
-            node.classList.add("locked");
-        }
-        
-        // 只要當前關卡已解鎖、已完成，或是最大解鎖關卡 + 1，即允許點擊進入重複挑戰
+        if (i === gameState.currentQuest) node.classList.add("current");
+        else if (gameState.unlockedQuests.includes(i)) node.classList.add("completed");
+        else node.classList.add("locked");
         const maxUnlocked = Math.max(...gameState.unlockedQuests, 1);
         if (i === gameState.currentQuest || gameState.unlockedQuests.includes(i) || i <= maxUnlocked + 1) {
             node.classList.remove("locked");
@@ -681,39 +638,26 @@ function renderQuestMap() {
                 }
             });
         }
-        
         wrapper.appendChild(node);
-        
-        // 連接線 (最後一關後無連線)
         if (i < totalQuests) {
             const line = document.createElement("div");
             line.className = "map-connector";
-            
-            if (gameState.unlockedQuests.includes(i) && gameState.unlockedQuests.includes(i + 1)) {
-                line.classList.add("completed");
-            } else if (i === gameState.currentQuest || (gameState.unlockedQuests.includes(i) && i + 1 === gameState.currentQuest)) {
-                line.classList.add("active");
-            }
+            if (gameState.unlockedQuests.includes(i) && gameState.unlockedQuests.includes(i + 1)) line.classList.add("completed");
+            else if (i === gameState.currentQuest || (gameState.unlockedQuests.includes(i) && i + 1 === gameState.currentQuest)) line.classList.add("active");
             wrapper.appendChild(line);
         }
         map.appendChild(wrapper);
     }
 }
 
-// 驗證代碼是否正確並觸發對應的戰鬥回饋與成就 (Verify Code & Attack Feedbacks)
 function verifyCode(code, output) {
     const quest = questData[gameState.currentQuest];
     if (!quest || !quest.steps) return;
-    
     const step = quest.steps[gameState.currentStep - 1];
     if (!step) return;
-    
     const isCorrect = step.validate(code, output);
-    
     if (isCorrect) {
-        appendSuccessMessage("\u3010\u9B54\u6CD5\u8A65\u5531\u6210\u529F\uFF01\u3011");
-        
-        // 動態按題目數量計算扣減傷害
+        appendSuccessMessage("【魔法詠唱成功！】");
         const damage = quest.enemyMaxHp / quest.steps.length;
         gameState.enemyHp = Math.max(0, gameState.enemyHp - damage);
         updateEnemyHpBar();
@@ -836,8 +780,26 @@ function gainExp(amount) {
 // 6. 事件綁定 (Event Listeners)
 document.getElementById("castSpellBtn").addEventListener("click", castSpell);
 document.getElementById("clearConsoleBtn").addEventListener("click", clearConsole);
+document.getElementById("helpBtn").addEventListener("click", startTutorial);
+
 document.getElementById("modalCloseBtn").addEventListener("click", () => {
-    document.getElementById("modalOverlay").classList.remove("show");
+    if (tutorialActive) {
+        currentTutorialStep++;
+        if (currentTutorialStep < tutorialSteps.length) {
+            showTutorialStep();
+        } else {
+            // 教學導覽結束，清除高亮並保存狀態
+            tutorialActive = false;
+            document.querySelectorAll(".tutorial-highlight").forEach(el => {
+                el.classList.remove("tutorial-highlight");
+            });
+            document.getElementById("modalOverlay").classList.remove("show");
+            localStorage.setItem("pyquest_tutorial_seen", "true");
+            appendSuccessMessage("【新手教學】導覽完成！祝你施法順利！");
+        }
+    } else {
+        document.getElementById("modalOverlay").classList.remove("show");
+    }
 });
 
 // 當網頁載入時初始化
@@ -846,4 +808,12 @@ window.addEventListener("DOMContentLoaded", () => {
     initPyodide();
     updatePlayerStats();
     renderQuestMap();
+    
+    // 如果是首次啟動，於 1.5 秒後自動啟動新手教學導覽
+    const seenTutorial = localStorage.getItem("pyquest_tutorial_seen");
+    if (!seenTutorial) {
+        setTimeout(() => {
+            startTutorial();
+        }, 1500);
+    }
 });

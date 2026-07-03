@@ -811,3 +811,39 @@ body {
     background: var(--neon-blue);
 }
 
+/* Help Button & Tutorial Focus (遊戲說明與教學高亮樣式) */
+.help-btn {
+    background: rgba(255, 0, 127, 0.15);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    border-radius: 8px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s;
+    text-shadow: 0 0 4px rgba(255, 0, 127, 0.4);
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.15);
+}
+
+.help-btn:hover {
+    background: var(--neon-pink);
+    color: #ffffff;
+    box-shadow: 0 0 15px var(--neon-pink);
+    transform: translateY(-1px);
+}
+
+/* Tutorial Highlighting with mask penetration (教學元素穿透高亮) */
+.tutorial-highlight {
+    position: relative !important;
+    z-index: 101 !important;
+    box-shadow: 0 0 0 9999px rgba(8, 4, 23, 0.8), 0 0 25px #ffd700 !important;
+    border-color: #ffd700 !important;
+    pointer-events: none; /* 防止在引導時玩家亂點 */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
