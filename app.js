@@ -698,7 +698,7 @@ function loadQuest(questId) {
     gameState.enemyMaxHp = quest.enemyMaxHp;
     updateEnemyHpBar();
     loadStep();
-    renderQuestMap();
+
 }
 
 function loadStep() {
@@ -799,11 +799,10 @@ function showModal(title, body, iconClass = "fa-trophy", isLevelUp = false, btnT
 let tutorialActive = false;
 let currentTutorialStep = 0;
 const tutorialSteps = [
-    { title: "🧙‍♂️ 歡迎來到 PyQuest 魔法世界！", body: "這是一個邊學邊玩的 Python 程式挑戰遊戲。<br>接下來我們將用 1 分鐘的導覽引導你認識各個區域，幫助你輕鬆上手！", targetId: null, btnText: "開始導覽 (1/5)", iconClass: "fa-wand-magic-sparkles" },
-    { title: "🗺️ 關卡傳送地圖 (Quest Map)", body: "這裡是你的**冒險傳送地圖**。顯示 1-10 關的解鎖進度，過關後可以隨時點擊數字傳送、重複練習！", targetId: "questMap", btnText: "下一步 (2/5)", iconClass: "fa-map" },
-    { title: "📋 任務引導面板 (Quest Book)", body: "這裡會顯示當前關卡的魔物、<b>步驟說明</b>與<b>技巧提示 (Tips)</b>。請仔細閱讀目標後再動手寫代碼！", targetId: "adventurePanel", btnText: "下一步 (3/5)", iconClass: "fa-book-open" },
-    { title: "🔮 魔法編輯器 (Spell Editor)", body: "這是編寫程式碼的區域。為防止偷懶，系統不會預填答案，請看清左側提示<b>親自動手輸入</b>！", targetId: "editorContainer", btnText: "下一步 (4/5)", iconClass: "fa-keyboard" },
-    { title: "⚡ 詠唱魔法與水晶球", body: "完成代碼後，點擊右下角<b>詠唱魔法 (Cast Spell)</b>。執行結果與可能出錯的紅色錯誤將在主控台呈現！", targetId: "magicPanel", btnText: "完成導覽，開始冒險！", iconClass: "fa-terminal" }
+    { title: "🧙‍♂️ 歡迎來到 PyQuest 魔法對決！", body: "這裏是你的修煉挑戰戰場。<br>接下來我們將用 30 秒的導覽引導你認識各個區域，幫助你開始施法！", targetId: null, btnText: "開始導覽 (1/4)", iconClass: "fa-wand-magic-sparkles" },
+    { title: "📋 任務引導面板 (Quest Book)", body: "這裡會顯示當前關卡的魔物、<b>步驟說明</b>與<b>技巧提示 (Tips)</b>。請仔細閱讀目標後再動手寫代碼！", targetId: "adventurePanel", btnText: "下一步 (2/4)", iconClass: "fa-book-open" },
+    { title: "🔮 魔法編輯器 (Spell Editor)", body: "這是編寫程式碼的區域。為防止偷懶，系統不會預填答案，請看清左側提示<b>親自動手輸入</b>！", targetId: "editorContainer", btnText: "下一步 (3/4)", iconClass: "fa-keyboard" },
+    { title: "⚡ 詠唱魔法與水晶球", body: "完成代碼後，點擊右下角<b>詠唱魔法 (Cast Spell)</b>。執行結果與可能出錯的紅色錯誤將在主控台呈現！", targetId: "magicPanel", btnText: "完成導覽，開始挑戰！", iconClass: "fa-terminal" }
 ];
 
 function startTutorial() {
@@ -843,44 +842,7 @@ function loadGame() {
 }
 
 function renderQuestMap() {
-    const map = document.getElementById("questMap");
-    if (!map) return;
-    map.innerHTML = "";
-    const totalQuests = 10;
-    for (let i = 1; i <= totalQuests; i++) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "map-node-wrapper";
-        const node = document.createElement("div");
-        node.className = "map-node";
-        node.innerText = i;
-        if (i === gameState.currentQuest) node.classList.add("current");
-        else if (gameState.unlockedQuests.includes(i)) node.classList.add("completed");
-        else node.classList.add("locked");
-        const maxUnlocked = Math.max(...gameState.unlockedQuests, 1);
-        if (i === gameState.currentQuest || gameState.unlockedQuests.includes(i) || i <= maxUnlocked + 1) {
-            node.classList.remove("locked");
-            node.classList.add("unlocked");
-            node.addEventListener("click", () => {
-                gameState.currentQuest = i;
-                gameState.currentStep = 1;
-                saveGame();
-                loadQuest(i);
-                // 切換為遊戲挑戰視窗 (SPA)
-                document.getElementById("mapView").classList.remove("active");
-                document.getElementById("gameView").classList.add("active");
-                appendSystemMessage(`【傳送】已進入關卡 Lv.${i} 挑戰！`);
-            });
-        }
-        wrapper.appendChild(node);
-        if (i < totalQuests) {
-            const line = document.createElement("div");
-            line.className = "map-connector";
-            if (gameState.unlockedQuests.includes(i) && gameState.unlockedQuests.includes(i + 1)) line.classList.add("completed");
-            else if (i === gameState.currentQuest || (gameState.unlockedQuests.includes(i) && i + 1 === gameState.currentQuest)) line.classList.add("active");
-            wrapper.appendChild(line);
-        }
-        map.appendChild(wrapper);
-    }
+    // 地圖已遷移至獨立 index.html 頁面，此處僅作為兼容性保留
 }
 
 function verifyCode(code, output) {
@@ -937,7 +899,7 @@ function verifyCode(code, output) {
                     gameState.currentQuest = nextQuestId;
                     gameState.currentStep = 1;
                     saveGame();
-                    renderQuestMap(); // 更新地圖
+                 // 更新地圖
                     appendSystemMessage("\u3010\u7CFB\u7D71\u3011\u958B\u555F\u5168\u65B0\u96E3\u6613\u5EA6\u95DC\u5361\uFF01");
                     loadQuest(gameState.currentQuest);
                 } else {
@@ -1015,11 +977,9 @@ document.getElementById("castSpellBtn").addEventListener("click", castSpell);
 document.getElementById("clearConsoleBtn").addEventListener("click", clearConsole);
 document.getElementById("helpBtn").addEventListener("click", startTutorial);
 
-// 返回地圖按鈕事件
+// 返回地圖按鈕事件：物理跳轉回首頁 index.html
 document.getElementById("mapBackBtn").addEventListener("click", () => {
-    renderQuestMap();
-    document.getElementById("gameView").classList.remove("active");
-    document.getElementById("mapView").classList.add("active");
+    window.location.href = "index.html?v=2.0.0";
 });
 
 document.getElementById("modalCloseBtn").addEventListener("click", () => {
@@ -1039,12 +999,10 @@ document.getElementById("modalCloseBtn").addEventListener("click", () => {
         }
     } else {
         document.getElementById("modalOverlay").classList.remove("show");
-        // 如果目前關卡完成了（怪物血量為 0 且步驟完成了），關閉彈窗後自動返回地圖
+        // 物理跳轉：如果目前關卡完成（怪物血量歸 0 且步驟完成），自動返回地圖選擇首頁
         const quest = questData[gameState.currentQuest];
         if (gameState.enemyHp <= 0 && gameState.currentStep >= quest.steps.length) {
-            renderQuestMap();
-            document.getElementById("gameView").classList.remove("active");
-            document.getElementById("mapView").classList.add("active");
+            window.location.href = "index.html?v=2.0.0";
         }
     }
 });
@@ -1054,7 +1012,7 @@ window.addEventListener("DOMContentLoaded", () => {
     loadGame();
     initPyodide();
     updatePlayerStats();
-    renderQuestMap();
+
     
     // 如果是首次啟動，於 1.5 秒後自動啟動新手教學導覽
     const seenTutorial = localStorage.getItem("pyquest_tutorial_seen");
